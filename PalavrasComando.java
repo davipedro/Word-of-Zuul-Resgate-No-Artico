@@ -13,16 +13,16 @@ public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda"
+        "ir", "sair", "ajuda" ,"olhar"
     };
 
     /**
      * Construtor - inicializa as palavras de comando.
      */
-    public PalavrasComando()
-    {
-        // nada a fazer no momento...
-    }
+    // public PalavrasComando()
+    // {
+    //     // nada a fazer no momento...
+    // }
 
     /**
      * Verifica se uma dada String eh uma palavra de comando valida. 
@@ -37,5 +37,15 @@ public class PalavrasComando
         }
         // se chegamos aqui, a string nao foi encontrada nos comandos.
         return false;
+    }
+
+    /**
+     * Imprimir todos os comandos válidos para System. 
+    */
+    public void mostrarTodos(){
+        for (String comando : comandosValidos) {
+            System.out.println(comando + " ");
+        }
+        System.out.println();
     }
 }

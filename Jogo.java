@@ -44,11 +44,14 @@ public class Jogo
         escritorio = new Ambiente("na sala de administracao dos computadores");
         
         // inicializa as saidas dos ambientes
-        fora.ajustarSaidas(null, anfiteatro, laboratorio, cantina);
-        anfiteatro.ajustarSaidas(null, null, null, fora);
-        cantina.ajustarSaidas(null, fora, null, null);
-        laboratorio.ajustarSaidas(fora, escritorio, null, null);
-        escritorio.ajustarSaidas(null, null, null, laboratorio);
+        fora.definirSaidas("leste", anfiteatro);
+        fora.definirSaidas("sul", laboratorio);
+        fora.definirSaidas("oeste", cantina);
+        anfiteatro.definirSaidas("oeste",fora);
+        cantina.definirSaidas("leste", fora);
+        laboratorio.definirSaidas("norte", fora);
+        laboratorio.definirSaidas("leste", escritorio);
+        escritorio.definirSaidas("oeste", laboratorio);
 
         ambienteAtual = fora;  // o jogo comeca do lado de fora
     }
@@ -81,23 +84,8 @@ public class Jogo
         System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
-        
-        System.out.println("Voce esta " + ambienteAtual.getDescricao());
-    
-        System.out.print("Saidas: ");
-        if(ambienteAtual.saidaNorte != null) {
-            System.out.print("norte ");
-        }
-        if(ambienteAtual.saidaLeste != null) {
-            System.out.print("leste ");
-        }
-        if(ambienteAtual.saidaSul != null) {
-            System.out.print("sul ");
-        }
-        if(ambienteAtual.saidaOeste != null) {
-            System.out.print("oeste ");
-        }
-        System.out.println();
+
+        imprimirInfoLocalizacao();
     }
 
     /**
@@ -121,6 +109,9 @@ public class Jogo
         else if (palavraDeComando.equals("ir")) {
             irParaAmbiente(comando);
         }
+        else if (palavraDeComando.equals("olhar")){
+            olhar();
+        }
         else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
         }
@@ -141,7 +132,7 @@ public class Jogo
         System.out.println("pela universidade.");
         System.out.println();
         System.out.println("Suas palavras de comando sao:");
-        System.out.println("   ir sair ajuda");
+        analisador.mostrarComandos();
     }
 
     /** 
@@ -159,19 +150,7 @@ public class Jogo
         String direcao = comando.getSegundaPalavra();
 
         // Tenta sair do ambiente atual
-        Ambiente proximoAmbiente = null;
-        if(direcao.equals("norte")) {
-            proximoAmbiente = ambienteAtual.saidaNorte;
-        }
-        if(direcao.equals("leste")) {
-            proximoAmbiente = ambienteAtual.saidaLeste;
-        }
-        if(direcao.equals("sul")) {
-            proximoAmbiente = ambienteAtual.saidaSul;
-        }
-        if(direcao.equals("oeste")) {
-            proximoAmbiente = ambienteAtual.saidaOeste;
-        }
+        Ambiente proximoAmbiente = ambienteAtual.getSaida(direcao);
 
         if (proximoAmbiente == null) {
             System.out.println("Nao ha passagem!");
@@ -179,23 +158,17 @@ public class Jogo
         else {
             ambienteAtual = proximoAmbiente;
             
-            System.out.println("Voce esta " + ambienteAtual.getDescricao());
-            
-            System.out.print("Saidas: ");
-            if(ambienteAtual.saidaNorte != null) {
-                System.out.print("norte ");
-            }
-            if(ambienteAtual.saidaLeste != null) {
-                System.out.print("leste ");
-            }
-            if(ambienteAtual.saidaSul != null) {
-                System.out.print("sul ");
-            }
-            if(ambienteAtual.saidaOeste != null) {
-                System.out.print("oeste ");
-            }
-            System.out.println();
+            imprimirInfoLocalizacao();
         }
+    }
+
+    public void imprimirInfoLocalizacao(){
+        System.out.println(ambienteAtual.getDescricaoLonga());
+        System.out.println();
+    }
+
+    public void olhar(){
+        System.out.println(ambienteAtual.getDescricaoLonga());
     }
 
     /** 

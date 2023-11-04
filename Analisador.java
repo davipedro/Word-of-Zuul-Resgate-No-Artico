@@ -53,7 +53,7 @@ public class Analisador
                 // obs: nos simplesmente ignoramos o resto da linha.
             }
         }
-
+        tokenizer.close();
         // Agora verifica se esta palavra eh conhecida. Se for, cria um comando
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
         if(palavrasDeComando.ehComando(palavra1)) {
@@ -62,5 +62,12 @@ public class Analisador
         else {
             return new Comando(null, palavra2); 
         }
+    }
+
+    /**
+     * Imprime uma lista de palavras de comando válidas.
+     */
+    public void mostrarComandos(){
+        palavrasDeComando.mostrarTodos();
     }
 }

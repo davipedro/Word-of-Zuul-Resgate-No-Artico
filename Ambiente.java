@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Classe Ambiente - um ambiente em um jogo adventure.
  *
@@ -15,11 +18,8 @@
  */
 public class Ambiente 
 {
-    public String descricao;
-    public Ambiente saidaNorte;
-    public Ambiente saidaSul;
-    public Ambiente saidaLeste;
-    public Ambiente saidaOeste;
+    private String descricao;
+    private HashMap<String, Ambiente> saidas;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
@@ -30,9 +30,9 @@ public class Ambiente
      * "um jardim aberto".
      * @param descricao A descricao do ambiente.
      */
-    public Ambiente(String descricao) 
-    {
+    public Ambiente(String descricao) {
         this.descricao = descricao;
+        saidas = new HashMap<String, Ambiente>();
     }
 
     /**
@@ -43,16 +43,31 @@ public class Ambiente
      * @param sul A saida sul.
      * @param oeste A saida oeste.
      */
-    public void ajustarSaidas(Ambiente norte, Ambiente leste, Ambiente sul, Ambiente oeste) 
-    {
-        if(norte != null)
-            saidaNorte = norte;
-        if(leste != null)
-            saidaLeste = leste;
-        if(sul != null)
-            saidaSul = sul;
-        if(oeste != null)
-            saidaOeste = oeste;
+
+    public void definirSaidas(String direcao, Ambiente vizinho){
+        saidas.put(direcao, vizinho);
+    }
+    /**
+     * Retorna a sala que é alcançada se sairmos desta
+     * sala na direção "direção". Se não houver nenhuma sala nessa
+     * direção, retorna nulo.
+     */
+    public Ambiente getSaida(String direcao){
+        return saidas.get(direcao);
+    }
+
+    /**
+     * Retorna uma descrição das saídas da sala,
+     * por exemplo, "Saidas: norte".
+     * @return Uma descrição das saídas disponíveis.
+     */
+    public String getDescricaoSaida(){
+        String saidasString = "Saidas: ";
+        Set<String> chaves = saidas.keySet();
+        for (String saida : chaves) {
+            saidasString += " " + saida;
+        }
+        return saidasString;
     }
 
     /**
@@ -63,4 +78,13 @@ public class Ambiente
         return descricao;
     }
 
+    /**
+     * Retorna uma descrição longa desse quarto, na forma:
+     *      Voce esta no cantina
+     *      Saidas: leste
+     * @return Uma descrição do quarto, incluindo saídas.
+     */
+    public String getDescricaoLonga(){
+        return "Voce esta " + descricao + ".\n" + getDescricaoSaida();
+    }
 }
