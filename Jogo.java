@@ -34,26 +34,53 @@ public class Jogo
      */
     private void criarAmbientes()
     {
-        Ambiente fora, anfiteatro, cantina, laboratorio, escritorio;
+        Ambiente cozinha, quartoLadoCozinha, quartoLadoBanheiro, banheiro, corredorOeste,corredorCentroOeste,corredorCentroLeste, corredorLeste, laboratorio, salaDeComando, oficina, garagem, torre;
       
         // cria os ambientes
-        fora = new Ambiente("do lado de fora da entrada principal de uma universidade");
-        anfiteatro = new Ambiente("no anfiteatro");
-        cantina = new Ambiente("na cantina do campus");
-        laboratorio = new Ambiente("no laboratorio de computacao");
-        escritorio = new Ambiente("na sala de administracao dos computadores");
+        cozinha = new Ambiente("na cozinha da estacao");
+        quartoLadoCozinha = new Ambiente("no quarto ao lado da cozinha");
+        quartoLadoBanheiro = new Ambiente("no quarto ao lado do banheiro");
+        banheiro = new Ambiente("no banheiro da estacao");
+        corredorOeste = new Ambiente("no lado oeste do corredor");
+        corredorCentroOeste = new Ambiente("no centro mais a oeste do corredor");
+        corredorCentroLeste = new Ambiente("no centro mais a leste do corredor");
+        corredorLeste = new Ambiente("no lado leste do corredor");
+        laboratorio = new Ambiente("no laboratório da estacao");
+        salaDeComando = new Ambiente("na sala de comando da estacao");
+        oficina = new Ambiente("na oficina da estacao");
+        garagem = new Ambiente("na garagem da estacao");
+        torre = new Ambiente("na torre da estacao");
         
         // inicializa as saidas dos ambientes
-        fora.definirSaidas("leste", anfiteatro);
-        fora.definirSaidas("sul", laboratorio);
-        fora.definirSaidas("oeste", cantina);
-        anfiteatro.definirSaidas("oeste",fora);
-        cantina.definirSaidas("leste", fora);
-        laboratorio.definirSaidas("norte", fora);
-        laboratorio.definirSaidas("leste", escritorio);
-        escritorio.definirSaidas("oeste", laboratorio);
+        cozinha.definirSaidas("sul", corredorOeste);
+        quartoLadoCozinha.definirSaidas("sul", corredorCentroOeste);
+        quartoLadoBanheiro.definirSaidas("sul", corredorCentroLeste);
+        banheiro.definirSaidas("sul", corredorLeste);
+        laboratorio.definirSaidas("norte", corredorLeste);
+        salaDeComando.definirSaidas("norte", corredorCentroOeste);
+        oficina.definirSaidas("norte", corredorLeste);
+        garagem.definirSaidas("norte", oficina);
+        garagem.definirSaidas("oeste", torre);
+        //corredor
+        //Oeste
+        corredorOeste.definirSaidas("norte", cozinha);
+        corredorOeste.definirSaidas("sul", laboratorio);
+        corredorOeste.definirSaidas("leste", corredorCentroOeste);
+        //CentroOeste
+        corredorCentroOeste.definirSaidas("norte", quartoLadoCozinha);
+        corredorCentroOeste.definirSaidas("sul", salaDeComando);
+        corredorCentroOeste.definirSaidas("oeste", corredorOeste);
+        corredorCentroOeste.definirSaidas("leste", corredorCentroLeste);
+        //CentroLeste
+        corredorCentroLeste.definirSaidas("norte", quartoLadoBanheiro);
+        corredorCentroLeste.definirSaidas("oeste", corredorCentroOeste);
+        corredorCentroLeste.definirSaidas("leste", corredorLeste);
+        //Leste
+        corredorLeste.definirSaidas("norte", banheiro);
+        corredorLeste.definirSaidas("sul", oficina);
+        corredorLeste.definirSaidas("oeste", corredorCentroOeste);
 
-        ambienteAtual = fora;  // o jogo comeca do lado de fora
+        ambienteAtual = quartoLadoCozinha;  // o jogo comeca no quarto ao lado da cozinha
     }
 
     /**
@@ -128,10 +155,9 @@ public class Jogo
      */
     private void imprimirAjuda() 
     {
-        System.out.println("Voce esta perdido. Voce esta sozinho. Voce caminha");
-        System.out.println("pela universidade.");
+        System.out.println("Pelo nervosismo da situacao voce fica confuso para onde ir");
         System.out.println();
-        System.out.println("Suas palavras de comando sao:");
+        System.out.println("Suas direcoes sao:");
         analisador.mostrarComandos();
     }
 
