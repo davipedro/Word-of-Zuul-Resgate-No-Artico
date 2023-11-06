@@ -157,7 +157,7 @@ public class Jogo
     {
         System.out.println("Pelo nervosismo da situacao voce fica confuso para onde ir");
         System.out.println();
-        System.out.println("Suas direcoes sao:");
+        System.out.println("Seus comandos sao:");
         analisador.mostrarComandos();
     }
 
