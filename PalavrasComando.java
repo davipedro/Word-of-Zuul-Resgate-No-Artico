@@ -17,14 +17,6 @@ public class PalavrasComando
     };
 
     /**
-     * Construtor - inicializa as palavras de comando.
-     */
-    // public PalavrasComando()
-    // {
-    //     // nada a fazer no momento...
-    // }
-
-    /**
      * Verifica se uma dada String eh uma palavra de comando valida. 
      * @return true se a string dada eh um comando valido,
      * false se nao eh.

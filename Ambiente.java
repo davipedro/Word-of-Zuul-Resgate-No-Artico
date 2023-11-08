@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -18,21 +20,23 @@ import java.util.Set;
  */
 public class Ambiente 
 {
+    private Random aleatorio;
     private String descricao;
     private HashMap<String, Ambiente> saidas;
+    private ArrayList<Movel> moveis;
+    private ArrayList<Item> itensDisponiveisAmbiente;
 
     /**
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
-     * nao tem saidas. "descricao" eh algo como "uma cozinha" ou
-     * "
-     * Create a room described "description". Initially, it has
-     * no exits. "description" is something like "a kitchen" or
-     * "um jardim aberto".
+     * nao tem saidas. "descricao" eh algo como "uma cozinha"
      * @param descricao A descricao do ambiente.
      */
     public Ambiente(String descricao) {
         this.descricao = descricao;
         saidas = new HashMap<String, Ambiente>();
+        moveis = new ArrayList<>();
+        itensDisponiveisAmbiente = new ArrayList<>();
+        aleatorio = new Random();
     }
 
     /**
@@ -43,9 +47,80 @@ public class Ambiente
      * @param sul A saida sul.
      * @param oeste A saida oeste.
      */
-
     public void definirSaidas(String direcao, Ambiente vizinho){
         saidas.put(direcao, vizinho);
+    }
+
+    /**
+     * Define os moveis presentes no ambiente, cria e
+     * e adiciona o movel na lista de itens do ambiente
+     * @param nome Nome do movel
+     * @param descricao Descricao do movel
+     */
+    public void definirMoveis(String nome, String descricao){
+        Movel movel = new Movel(nome, descricao);
+        moveis.add(movel);
+    }
+
+    /**
+     * Retorna um inteiro aleatorio entre 0
+     * e o tamanho do array de itens disponiveis
+     * @return 
+     */
+    public int gerarIndiceAleatorio(){
+        if (itensDisponiveisAmbiente.size() > 1) {
+            return aleatorio.nextInt(itensDisponiveisAmbiente.size());
+        }
+        return 0;
+    }
+
+    /**
+     * Distribui os itens para os móveis
+     * aleatoriamente, cada movel recebe um item por vez ate
+     * que nao tenha mais itens para distribuir, por fim remove o
+     * item dos itens itens disponiveis
+     * OBS: DEVE SER USADO APOS INSERIR TODOS OS ITENS DO QUARTO
+     */
+    public void definirItensMoveis(){
+        int indiceItem;
+        int indiceMovel=0;
+        Item itemAleatorio;
+        Movel movelAtual;
+            while (!(itensDisponiveisAmbiente.isEmpty())) {
+                movelAtual = moveis.get(indiceMovel);
+                indiceItem = gerarIndiceAleatorio();
+                itemAleatorio = itensDisponiveisAmbiente.get(indiceItem); 
+                movelAtual.adicionarItem(itemAleatorio);
+                itensDisponiveisAmbiente.remove(indiceItem);
+
+                indiceMovel++;
+                if (indiceMovel == moveis.size()) {
+                    indiceMovel = 0;
+                }
+            }
+    }
+    
+    /**
+     * Adiciona um item no array de itens disponiveis
+     * para os moveis
+     * @param nome
+     * @param descricao
+     */
+    public void definirItensAmbiente(String nome, String descricao){
+        Item item = new Item(nome, descricao);
+        itensDisponiveisAmbiente.add(item);
+    }
+
+    /**
+     * Retorna os moveis presentes no ambiente
+     * @return os moveis em String
+     */
+    public String getMoveisAmbiente(){
+        String moveisString = "Voce avista os seguintes moveis:\n";
+        for (Movel movel : moveis) {
+            moveisString += movel.getNome() + " " + movel.getDescricao() + "\n";
+        }
+        return moveisString;
     }
     /**
      * Retorna a sala que é alcançada se sairmos desta

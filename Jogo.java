@@ -80,7 +80,68 @@ public class Jogo
         corredorLeste.definirSaidas("sul", oficina);
         corredorLeste.definirSaidas("oeste", corredorCentroOeste);
 
-        ambienteAtual = quartoLadoCozinha;  // o jogo comeca no quarto ao lado da cozinha
+        //inicializa os moveis do ambiente
+        cozinha.definirMoveis("balcao", "um balcao de tamanho medio");
+        cozinha.definirMoveis("armario", "um armario que contém algumas comidas enlatadas");
+        cozinha.definirMoveis("pia", "uma pia de cozinha");
+
+        quartoLadoCozinha.definirMoveis("beliche", "uma beliche onde dorme voce e um dos seus colegas de expedicao ");
+        quartoLadoCozinha.definirMoveis("guarda-roupa", "um guarda-roupa grande, ele parece suprir voce e seu colega");
+        quartoLadoCozinha.definirMoveis("mesa", "uma mesa pequena que voce usa para fazer anotacoes");
+
+        quartoLadoBanheiro.definirMoveis("beliche", "uma beliche onde dorme dois dos seus colegas de expedicao");
+        quartoLadoBanheiro.definirMoveis("guarda-roupa", "um guarda-roupa nao tao grande, eles vivem reclamando disso");
+        quartoLadoBanheiro.definirMoveis("mesa", "uma mesa pequena cheia de copos sujos de cafe");
+
+        banheiro.definirMoveis("armario", "um armario com itens de banheiro");
+
+        laboratorio.definirMoveis("armario", "um armario grande");
+        laboratorio.definirMoveis("prateleira", "uma prateleira grande de metal");
+        laboratorio.definirMoveis("mesa", "uma mesa de madeira com uma gaveta entreaberta");
+
+        oficina.definirMoveis("armario", "armário de metal com duas portas e quatro gavetas ");
+        oficina.definirMoveis("prateleira", "uma prateleira grande de metal");
+        oficina.definirMoveis("pilha de sucata", "uma pilha de sucata de metal");
+
+        garagem.definirMoveis("lixeira", "uma lixeira grande de plastico com rodas");
+        garagem.definirMoveis("prateleira", "uma prateleira muito empoeirada");
+        garagem.definirMoveis("carro", "um carro de expedicao, ele parece estar muito danificado, nao ha tempo para conserta-lo");
+
+        //inicializa os itens disponiveis em cada ambiente
+        cozinha.definirItensAmbiente("Faca de Chef", "uma faca muito afiada");
+        cozinha.definirItensAmbiente("Pote de vidro", "um simples pote vazio de vidro");
+
+        quartoLadoCozinha.definirItensAmbiente("Tesoura", "uma tesoura de costura");
+        quartoLadoCozinha.definirItensAmbiente("roupas velhas", "roupas velhas que nao lhe servem mais, tirar retalhos delas pode ser util");
+        quartoLadoCozinha.definirItensAmbiente("mochila", "uma grande mochila de expedição, util para carregar diversos itens");
+
+        quartoLadoBanheiro.definirItensAmbiente("linha", "um rolo pequeno de linha de costura");
+        quartoLadoBanheiro.definirItensAmbiente("agulha", "uma agulha de custura, sempre util para remendar roupas");
+
+        banheiro.definirItensAmbiente("lampada", "uma lampada de led reserva");
+        
+        laboratorio.definirItensAmbiente("bateria", "uma bateria de 9V");
+        laboratorio.definirItensAmbiente("placa de circuito impresso", "pode ser util para consertar algum equipamento eletronico");
+
+        oficina.definirItensAmbiente("fio de cobre", "um fio extenso de cobre");
+        oficina.definirItensAmbiente("kit de solda", "um kit de solda com ferro de solda e estanho");
+        oficina.definirItensAmbiente("cano de metal", "um cano de metal com tamanho perfeito para ser um cabo de picareta");
+
+        garagem.definirItensAmbiente("bateria de carro", "uma bateria de carro, pode ser util para ligar algum equipamento eletronico");
+        garagem.definirItensAmbiente("fita isolante", "uma fita isolante de cor preta");
+        garagem.definirItensAmbiente("corda", "uma corda muito extensa e resistente");
+
+        //define aleatoriamente quais itens vao estar em quais moveis do ambiente
+        //OBS: DEVE SER USADO APOS INSERIR TODOS OS ITENS DO QUARTO
+        cozinha.definirItensMoveis();
+        quartoLadoCozinha.definirItensMoveis();
+        quartoLadoBanheiro.definirItensMoveis();
+        banheiro.definirItensMoveis();
+        laboratorio.definirItensMoveis();
+        oficina.definirItensMoveis();
+        garagem.definirItensMoveis();
+
+        ambienteAtual = salaDeComando;  // o jogo comeca no quarto ao lado da cozinha
     }
 
     /**
