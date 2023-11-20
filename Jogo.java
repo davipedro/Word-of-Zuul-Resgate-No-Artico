@@ -42,8 +42,8 @@ public class Jogo
         quartoLadoBanheiro = new Ambiente("no quarto ao lado do banheiro");
         banheiro = new Ambiente("no banheiro da estacao");
         corredorOeste = new Ambiente("no lado oeste do corredor");
-        corredorCentroOeste = new Ambiente("no centro mais a oeste do corredor");
-        corredorCentroLeste = new Ambiente("no centro mais a leste do corredor");
+        corredorCentroOeste = new Ambiente("no centro-oeste do corredor");
+        corredorCentroLeste = new Ambiente("no centro-leste do corredor");
         corredorLeste = new Ambiente("no lado leste do corredor");
         laboratorio = new Ambiente("no laboratório da estacao");
         salaDeComando = new Ambiente("na sala de comando da estacao");
@@ -59,6 +59,7 @@ public class Jogo
         laboratorio.definirSaidas("norte", corredorLeste);
         salaDeComando.definirSaidas("norte", corredorCentroOeste);
         oficina.definirSaidas("norte", corredorLeste);
+        oficina.definirSaidas("sul", garagem);
         garagem.definirSaidas("norte", oficina);
         garagem.definirSaidas("oeste", torre);
         //corredor
@@ -81,55 +82,58 @@ public class Jogo
         corredorLeste.definirSaidas("oeste", corredorCentroOeste);
 
         //inicializa os moveis do ambiente
-        cozinha.definirMoveis("balcao", "um balcao de tamanho medio");
-        cozinha.definirMoveis("armario", "um armario que contém algumas comidas enlatadas");
-        cozinha.definirMoveis("pia", "uma pia de cozinha");
+        //colocar o nome dos moveis em MAIUSCULO
+        cozinha.definirMoveis("BALCAO", "um balcao de tamanho medio");
+        cozinha.definirMoveis("ARMARIO", "um armario que contém algumas comidas enlatadas");
+        cozinha.definirMoveis("PIA", "uma pia de cozinha");
 
-        quartoLadoCozinha.definirMoveis("beliche", "uma beliche onde dorme voce e um dos seus colegas de expedicao ");
-        quartoLadoCozinha.definirMoveis("guarda-roupa", "um guarda-roupa grande, ele parece suprir voce e seu colega");
-        quartoLadoCozinha.definirMoveis("mesa", "uma mesa pequena que voce usa para fazer anotacoes");
+        quartoLadoCozinha.definirMoveis("BELICHE", "uma beliche onde dorme voce e um dos seus colegas de expedicao ");
+        quartoLadoCozinha.definirMoveis("GUARDA-ROUPA", "um guarda-roupa grande, ele parece suprir voce e seu colega");
+        quartoLadoCozinha.definirMoveis("MESA", "uma mesa pequena que voce usa para fazer anotacoes");
 
-        quartoLadoBanheiro.definirMoveis("beliche", "uma beliche onde dorme dois dos seus colegas de expedicao");
-        quartoLadoBanheiro.definirMoveis("guarda-roupa", "um guarda-roupa nao tao grande, eles vivem reclamando disso");
-        quartoLadoBanheiro.definirMoveis("mesa", "uma mesa pequena cheia de copos sujos de cafe");
+        quartoLadoBanheiro.definirMoveis("BELICHE", "uma beliche onde dorme dois dos seus colegas de expedicao");
+        quartoLadoBanheiro.definirMoveis("GUARDA-ROUPA", "um guarda-roupa nao tao grande, seus colegas vivem reclamando disso");
+        quartoLadoBanheiro.definirMoveis("MESA", "uma mesa pequena cheia de copos sujos de cafe");
 
-        banheiro.definirMoveis("armario", "um armario com itens de banheiro");
+        banheiro.definirMoveis("ARMARIO", "um armario com itens de banheiro");
 
-        laboratorio.definirMoveis("armario", "um armario grande");
-        laboratorio.definirMoveis("prateleira", "uma prateleira grande de metal");
-        laboratorio.definirMoveis("mesa", "uma mesa de madeira com uma gaveta entreaberta");
+        laboratorio.definirMoveis("ARMARIO", "um armario grande");
+        laboratorio.definirMoveis("PRATELEIRA", "uma prateleira grande de metal");
+        laboratorio.definirMoveis("MESA", "uma mesa de madeira com uma gaveta entreaberta");
 
-        oficina.definirMoveis("armario", "armário de metal com duas portas e quatro gavetas ");
-        oficina.definirMoveis("prateleira", "uma prateleira grande de metal");
-        oficina.definirMoveis("pilha de sucata", "uma pilha de sucata de metal");
+        oficina.definirMoveis("ARMARIO", "armário de metal com duas portas e quatro gavetas ");
+        oficina.definirMoveis("PRATELEIRA", "uma prateleira grande de metal");
+        oficina.definirMoveis("SUCATA", "uma pilha de sucata de metal");
 
-        garagem.definirMoveis("lixeira", "uma lixeira grande de plastico com rodas");
-        garagem.definirMoveis("prateleira", "uma prateleira muito empoeirada");
-        garagem.definirMoveis("carro", "um carro de expedicao, ele parece estar muito danificado, nao ha tempo para conserta-lo");
+        garagem.definirMoveis("LIXEIRA", "uma lixeira grande de plastico com rodas");
+        garagem.definirMoveis("PRATELEIRA", "uma prateleira muito empoeirada");
+        garagem.definirMoveis("CARRO", "um carro de expedicao, ele parece estar muito danificado, nao ha tempo para conserta-lo");
+
+
 
         //inicializa os itens disponiveis em cada ambiente
-        cozinha.definirItensAmbiente("Faca de Chef", "uma faca muito afiada");
-        cozinha.definirItensAmbiente("Pote de vidro", "um simples pote vazio de vidro");
+        cozinha.definirItensAmbiente("FACA DE CHEF", "uma faca muito afiada");
+        cozinha.definirItensAmbiente("POTE DE VIDRO", "um simples pote vazio de vidro");
 
-        quartoLadoCozinha.definirItensAmbiente("Tesoura", "uma tesoura de costura");
-        quartoLadoCozinha.definirItensAmbiente("roupas velhas", "roupas velhas que nao lhe servem mais, tirar retalhos delas pode ser util");
-        quartoLadoCozinha.definirItensAmbiente("mochila", "uma grande mochila de expedição, util para carregar diversos itens");
+        quartoLadoCozinha.definirItensAmbiente("TESOURA", "uma tesoura de costura");
+        quartoLadoCozinha.definirItensAmbiente("ROUPAS VELHAS", "roupas velhas que nao lhe servem mais, tirar retalhos delas pode ser util");
+        quartoLadoCozinha.definirItensAmbiente("MOCHILA", "uma grande mochila de expedição, util para carregar diversos itens");
 
-        quartoLadoBanheiro.definirItensAmbiente("linha", "um rolo pequeno de linha de costura");
-        quartoLadoBanheiro.definirItensAmbiente("agulha", "uma agulha de custura, sempre util para remendar roupas");
+        quartoLadoBanheiro.definirItensAmbiente("LINHA", "um rolo pequeno de linha de costura");
+        quartoLadoBanheiro.definirItensAmbiente("AGULHA", "uma agulha de custura, sempre util para remendar roupas");
 
-        banheiro.definirItensAmbiente("lampada", "uma lampada de led reserva");
+        banheiro.definirItensAmbiente("LAMPADA", "uma lampada de led reserva");
         
-        laboratorio.definirItensAmbiente("bateria", "uma bateria de 9V");
-        laboratorio.definirItensAmbiente("placa de circuito impresso", "pode ser util para consertar algum equipamento eletronico");
+        laboratorio.definirItensAmbiente("BATERIA", "uma bateria de 9V");
+        laboratorio.definirItensAmbiente("PLACA DE CIRCUITO IMPRESSO", "pode ser util para consertar algum equipamento eletronico");
 
-        oficina.definirItensAmbiente("fio de cobre", "um fio extenso de cobre");
-        oficina.definirItensAmbiente("kit de solda", "um kit de solda com ferro de solda e estanho");
-        oficina.definirItensAmbiente("cano de metal", "um cano de metal com tamanho perfeito para ser um cabo de picareta");
+        oficina.definirItensAmbiente("FIO DE COBRE", "um fio extenso de cobre");
+        oficina.definirItensAmbiente("KIT DE SOLDA", "um kit de solda com ferro de solda e estanho");
+        oficina.definirItensAmbiente("CANO DE METAL", "um cano de metal com tamanho perfeito para ser um cabo de picareta");
 
-        garagem.definirItensAmbiente("bateria de carro", "uma bateria de carro, pode ser util para ligar algum equipamento eletronico");
-        garagem.definirItensAmbiente("fita isolante", "uma fita isolante de cor preta");
-        garagem.definirItensAmbiente("corda", "uma corda muito extensa e resistente");
+        garagem.definirItensAmbiente("BATERIA DE CARRO", "uma bateria de carro, pode ser util para ligar algum equipamento eletronico");
+        garagem.definirItensAmbiente("FITA ISOLANTE", "uma fita isolante de cor preta");
+        garagem.definirItensAmbiente("CORDA", "uma corda muito extensa e resistente");
 
         //define aleatoriamente quais itens vao estar em quais moveis do ambiente
         //OBS: DEVE SER USADO APOS INSERIR TODOS OS ITENS DO QUARTO
@@ -141,7 +145,7 @@ public class Jogo
         oficina.definirItensMoveis();
         garagem.definirItensMoveis();
 
-        ambienteAtual = salaDeComando;  // o jogo comeca no quarto ao lado da cozinha
+        ambienteAtual = salaDeComando;
     }
 
     /**
@@ -174,6 +178,7 @@ public class Jogo
         System.out.println();
 
         imprimirInfoLocalizacao();
+        System.out.println(analisador.mostrarComandos());
     }
 
     /**
@@ -200,6 +205,12 @@ public class Jogo
         else if (palavraDeComando.equals("olhar")){
             olhar();
         }
+        else if (palavraDeComando.equals("vasculhar")){
+            vasculhar(comando.getSegundaPalavra());
+        }
+        else if (palavraDeComando.equals("inventario")) {
+            Inventario.olharInventario();
+        }
         else if (palavraDeComando.equals("sair")) {
             querSair = sair(comando);
         }
@@ -218,8 +229,7 @@ public class Jogo
     {
         System.out.println("Pelo nervosismo da situacao voce fica confuso para onde ir");
         System.out.println();
-        System.out.println("Seus comandos sao:");
-        analisador.mostrarComandos();
+        System.out.println(analisador.mostrarComandos());
     }
 
     /** 
@@ -246,6 +256,7 @@ public class Jogo
             ambienteAtual = proximoAmbiente;
             
             imprimirInfoLocalizacao();
+            System.out.println(analisador.mostrarComandos());
         }
     }
 
@@ -254,8 +265,29 @@ public class Jogo
         System.out.println();
     }
 
-    public void olhar(){
+    private void olhar(){
         System.out.println(ambienteAtual.getDescricaoLonga());
+        System.out.println(analisador.mostrarComandos());
+    }
+
+    /**
+     * Acessa o movel do ambiente, pega os itens e passa para o inventario
+     */
+    private void vasculhar(String nomeMovel){
+        if (ambienteAtual.validaMovel(nomeMovel)){
+            String itensMovel = ambienteAtual.getDescricaoItensMovel(nomeMovel);
+
+            if (itensMovel != null){
+                System.out.println("Voce procura por itens interessantes:");
+                System.out.println(itensMovel);
+                Inventario.adicionarItens(ambienteAtual.transferirItensMovel(nomeMovel));
+                System.out.println("Voce leva todos os itens");
+            } else {
+                System.out.println("Nao ha nada util aqui");
+            }
+        } else {
+            System.out.println("Nao existe esse movel aqui");
+        }
     }
 
     /** 
@@ -266,7 +298,8 @@ public class Jogo
     private boolean sair(Comando comando) 
     {
         if(comando.temSegundaPalavra()) {
-            System.out.println("Sair o que?");
+            System.out.println("Deseja sair do jogo? Caso sim, digite somente 'sair'" +
+                    "\ncaso queira sair do ambiente utilize o comando 'ir'");
             return false;
         }
         else {
