@@ -27,9 +27,4 @@ public class Item {
     public String getDescricao(){
         return descricao; 
     }
-
-    @Override      // APAGAR DEPOIS APAGAR DEPOIS APAGAR DEPOIS APAGAR DEPOIS APAGAR DEPOIS APAGAR DEPOIS
-    public String toString() {
-        return getNome();
-    }
 }
