@@ -67,7 +67,7 @@ public class Analisador
     /**
      * Imprime uma lista de palavras de comando válidas.
      */
-    public void mostrarComandos(){
-        palavrasDeComando.mostrarTodos();
+    public String mostrarComandos(){
+        return palavrasDeComando.mostrarTodos() + "\n";
     }
 }
