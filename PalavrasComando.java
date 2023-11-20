@@ -13,7 +13,7 @@ public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda" ,"olhar"
+        "ir", "sair", "ajuda" ,"olhar", "vasculhar","inventario"
     };
 
     /**
@@ -23,8 +23,8 @@ public class PalavrasComando
      */
     public boolean ehComando(String umaString)
     {
-        for(int i = 0; i < comandosValidos.length; i++) {
-            if(comandosValidos[i].equals(umaString))
+        for (String comandosValido : comandosValidos) {
+            if (comandosValido.equals(umaString))
                 return true;
         }
         // se chegamos aqui, a string nao foi encontrada nos comandos.
@@ -34,10 +34,11 @@ public class PalavrasComando
     /**
      * Imprimir todos os comandos válidos para System. 
     */
-    public void mostrarTodos(){
+    public String mostrarTodos(){
+        StringBuilder comandosString = new StringBuilder("Seus comandos são:\n");
         for (String comando : comandosValidos) {
-            System.out.println(comando + " ");
+            comandosString.append(comando).append(" ");
         }
-        System.out.println();
+        return comandosString.toString();
     }
 }
