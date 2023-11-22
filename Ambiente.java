@@ -7,7 +7,7 @@ import java.util.Set;
  * Classe Ambiente - um ambiente em um jogo adventure.
  *
  * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.  
+ * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
  *
  * Um "Ambiente" representa uma localizacao no cenario do jogo. Ele eh
  * conectado aos outros ambientes atraves de saidas. As saidas sao
@@ -33,7 +33,7 @@ public class Ambiente
      */
     public Ambiente(String descricao) {
         this.descricao = descricao;
-        saidas = new HashMap<String, Ambiente>();
+        saidas = new HashMap<>();
         moveis = new ArrayList<>();
         itensDisponiveisAmbiente = new ArrayList<>();
         aleatorio = new Random();
@@ -116,12 +116,50 @@ public class Ambiente
      * @return os moveis em String
      */
     public String getMoveisAmbiente(){
-        String moveisString = "Voce avista os seguintes moveis:\n";
-        for (Movel movel : moveis) {
-            moveisString += movel.getNome() + " " + movel.getDescricao() + "\n";
+        if (moveis.isEmpty()){
+            return "(Nao ha moveis nesse ambiente para vasculhar)";
+        } else {
+            StringBuilder moveisString = new StringBuilder("""
+                    ========================================
+                    Voce avista os seguintes moveis:
+                    ========================================
+                    """);
+            for (Movel movel : moveis) {
+                moveisString.append(movel.getNome()).append(": ").append(movel.getDescricao()).append("\n");
+            }
+            moveisString.append("========================================");
+            return moveisString.toString();
         }
-        return moveisString;
     }
+
+    public ArrayList<Item> transferirItensMovel(String movel){
+        ArrayList<Item> itensTransferidos = new ArrayList<>();
+        for (Movel m : moveis){
+            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
+                itensTransferidos = m.transferirItens();
+            }
+        }
+        return itensTransferidos;
+    }
+
+    public String getDescricaoItensMovel(String movel){
+        for (Movel m : moveis){
+            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
+                return m.getItensDescricao();
+            }
+        }
+        return null;
+    }
+
+    public boolean validaMovel(String movel){
+        for (Movel m : moveis){
+            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Retorna a sala que é alcançada se sairmos desta
      * sala na direção "direção". Se não houver nenhuma sala nessa
@@ -137,12 +175,12 @@ public class Ambiente
      * @return Uma descrição das saídas disponíveis.
      */
     public String getDescricaoSaida(){
-        String saidasString = "Saidas: ";
+        StringBuilder saidasString = new StringBuilder("Saidas:");
         Set<String> chaves = saidas.keySet();
         for (String saida : chaves) {
-            saidasString += " " + saida;
+            saidasString.append(" ").append(saida);
         }
-        return saidasString;
+        return saidasString.toString();
     }
 
     /**
@@ -160,6 +198,6 @@ public class Ambiente
      * @return Uma descrição do quarto, incluindo saídas.
      */
     public String getDescricaoLonga(){
-        return "Voce esta " + descricao + ".\n" + getDescricaoSaida();
+        return "========================================\nVoce esta " + getDescricao() + ".\n" + getMoveisAmbiente() + "\n" + getDescricaoSaida() ;
     }
 }

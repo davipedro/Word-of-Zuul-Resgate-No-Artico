@@ -33,22 +33,35 @@ public class Movel {
         return nome;
     }
 
+    /**
+     * Adiciona um item a lista de itens
+     */
     public void adicionarItem(Item item){
         itens.add(item);
     }
 
     /**
-     * Retorna os itens presentes no movel
-     * @return Itens no movel
+     * Retorna a informacao dos itens presentes no movel
+     * @return Informacao dos itens no movel
      */
-    public String getItens(){
+    public String getItensDescricao(){
         if (itens.isEmpty()) {
-            return "Nao ha nada util aqui";
+            return null;
         }
-        String itensString = "Os itens em " + getNome() + " são:\n"; 
+        StringBuilder itensString = new StringBuilder("Os itens em " + getNome() + " são:\n");
         for (Item item : itens) {
-            itensString += item + " ";
+            itensString.append(item.getNome()).append(": ").append(item.getDescricao());
         }
-        return itensString;
+        return itensString.toString();
+    }
+
+    /**
+     * Transfere os itens do movel para outro lugar
+     * @return Itens do movel
+     */
+    public ArrayList<Item> transferirItens(){
+        ArrayList<Item> itensTransferidos = new ArrayList<>(itens);
+        itens.clear();
+        return itensTransferidos;
     }
 }
