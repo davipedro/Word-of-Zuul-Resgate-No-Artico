@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull".
  *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
@@ -17,6 +20,10 @@
 
 public class Jogo 
 {
+    /**
+     * Define qual ambiente tera a bancada.
+     */
+    final String ambienteComBancada = "laboratorio";
     private Analisador analisador;
     private Ambiente ambienteAtual;
         
@@ -37,19 +44,19 @@ public class Jogo
         Ambiente cozinha, quartoLadoCozinha, quartoLadoBanheiro, banheiro, corredorOeste,corredorCentroOeste,corredorCentroLeste, corredorLeste, laboratorio, salaDeComando, oficina, garagem, torre;
       
         // cria os ambientes
-        cozinha = new Ambiente("na cozinha da estacao");
-        quartoLadoCozinha = new Ambiente("no quarto ao lado da cozinha");
-        quartoLadoBanheiro = new Ambiente("no quarto ao lado do banheiro");
-        banheiro = new Ambiente("no banheiro da estacao");
-        corredorOeste = new Ambiente("no lado oeste do corredor");
-        corredorCentroOeste = new Ambiente("no centro-oeste do corredor");
-        corredorCentroLeste = new Ambiente("no centro-leste do corredor");
-        corredorLeste = new Ambiente("no lado leste do corredor");
-        laboratorio = new Ambiente("no laboratório da estacao");
-        salaDeComando = new Ambiente("na sala de comando da estacao");
-        oficina = new Ambiente("na oficina da estacao");
-        garagem = new Ambiente("na garagem da estacao");
-        torre = new Ambiente("na torre da estacao");
+        laboratorio = new Ambiente("laboratorio","no laboratório da estacao");
+        cozinha = new Ambiente("cozinha","na cozinha da estacao");
+        quartoLadoCozinha = new Ambiente("quartoLadoCozinha","no quarto ao lado da cozinha");
+        quartoLadoBanheiro = new Ambiente("quartoLadoBanheiro","no quarto ao lado do banheiro");
+        banheiro = new Ambiente("banheiro","no banheiro da estacao");
+        corredorOeste = new Ambiente("corredorOeste","no lado oeste do corredor");
+        corredorCentroOeste = new Ambiente("corredorCentroOeste","no centro-oeste do corredor");
+        corredorCentroLeste = new Ambiente("corredorCentroLeste","no centro-leste do corredor");
+        corredorLeste = new Ambiente("corredorLeste","no lado leste do corredor");
+        salaDeComando = new Ambiente("salaDeComando","na sala de comando da estacao");
+        oficina = new Ambiente("oficina","na oficina da estacao");
+        garagem = new Ambiente("garagem","na garagem da estacao");
+        torre = new Ambiente("torre","na torre da estacao");
         
         // inicializa as saidas dos ambientes
         cozinha.definirSaidas("sul", corredorOeste);
@@ -104,6 +111,7 @@ public class Jogo
         oficina.definirMoveis("ARMARIO", "armário de metal com duas portas e quatro gavetas ");
         oficina.definirMoveis("PRATELEIRA", "uma prateleira grande de metal");
         oficina.definirMoveis("SUCATA", "uma pilha de sucata de metal");
+        oficina.definirMoveis("MALETA","uma maleta de ferramentas");
 
         garagem.definirMoveis("LIXEIRA", "uma lixeira grande de plastico com rodas");
         garagem.definirMoveis("PRATELEIRA", "uma prateleira muito empoeirada");
@@ -113,11 +121,9 @@ public class Jogo
 
         //inicializa os itens disponiveis em cada ambiente
         cozinha.definirItensAmbiente("FACA DE CHEF", "uma faca muito afiada");
-        cozinha.definirItensAmbiente("POTE DE VIDRO", "um simples pote vazio de vidro");
 
         quartoLadoCozinha.definirItensAmbiente("TESOURA", "uma tesoura de costura");
-        quartoLadoCozinha.definirItensAmbiente("ROUPAS VELHAS", "roupas velhas que nao lhe servem mais, tirar retalhos delas pode ser util");
-        quartoLadoCozinha.definirItensAmbiente("MOCHILA", "uma grande mochila de expedição, util para carregar diversos itens");
+        quartoLadoCozinha.definirItensAmbiente("CASACO RASGADO", "Um casaco velho e rasgado");
 
         quartoLadoBanheiro.definirItensAmbiente("LINHA", "um rolo pequeno de linha de costura");
         quartoLadoBanheiro.definirItensAmbiente("AGULHA", "uma agulha de custura, sempre util para remendar roupas");
@@ -125,14 +131,15 @@ public class Jogo
         banheiro.definirItensAmbiente("LAMPADA", "uma lampada de led reserva");
         
         laboratorio.definirItensAmbiente("BATERIA", "uma bateria de 9V");
-        laboratorio.definirItensAmbiente("PLACA DE CIRCUITO IMPRESSO", "pode ser util para consertar algum equipamento eletronico");
+        laboratorio.definirItensAmbiente("PLACA DE CIRCUITO IMPRESSO", "uma placa com circuitos que conectam e controlam aparelhos");
 
         oficina.definirItensAmbiente("FIO DE COBRE", "um fio extenso de cobre");
         oficina.definirItensAmbiente("KIT DE SOLDA", "um kit de solda com ferro de solda e estanho");
-        oficina.definirItensAmbiente("CANO DE METAL", "um cano de metal com tamanho perfeito para ser um cabo de picareta");
+        oficina.definirItensAmbiente("CANO DE METAL", "um cano de metal nao muito grande");
+        oficina.definirItensAmbiente("FITA ISOLANTE GRANDE", "uma fita isolante grande de cor preta");
 
-        garagem.definirItensAmbiente("BATERIA DE CARRO", "uma bateria de carro, pode ser util para ligar algum equipamento eletronico");
-        garagem.definirItensAmbiente("FITA ISOLANTE", "uma fita isolante de cor preta");
+        garagem.definirItensAmbiente("BATERIA DE CARRO", "uma bateria de carro");
+        garagem.definirItensAmbiente("FITA ISOLANTE PEQUENA", "uma pequena fita isolante de cor preta");
         garagem.definirItensAmbiente("CORDA", "uma corda muito extensa e resistente");
 
         //define aleatoriamente quais itens vao estar em quais moveis do ambiente
@@ -147,7 +154,6 @@ public class Jogo
 
         ambienteAtual = salaDeComando;
     }
-
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
@@ -182,7 +188,8 @@ public class Jogo
     }
 
     /**
-     * Dado um comando, processa-o (ou seja, executa-o)
+     * Dado um comando, processa-o (ou seja, executa-o).
+     * As opcoes de comando variam se o ambiente possui bancada ou nao
      * @param comando O Comando a ser processado.
      * @return true se o comando finaliza o jogo.
      */
@@ -195,27 +202,95 @@ public class Jogo
             return false;
         }
 
-        String palavraDeComando = comando.getPalavraDeComando();
-        if (palavraDeComando.equals("ajuda")) {
-            imprimirAjuda();
-        }
-        else if (palavraDeComando.equals("ir")) {
-            irParaAmbiente(comando);
-        }
-        else if (palavraDeComando.equals("olhar")){
-            olhar();
-        }
-        else if (palavraDeComando.equals("vasculhar")){
-            vasculhar(comando.getSegundaPalavra());
-        }
-        else if (palavraDeComando.equals("inventario")) {
-            Inventario.olharInventario();
-        }
-        else if (palavraDeComando.equals("sair")) {
-            querSair = sair(comando);
+        String palavraDeComando = comando.getPalavraDeComando().toLowerCase();
+
+        if (ambienteAtual.getNome().equalsIgnoreCase(ambienteComBancada)){
+            querSair = menuAmbienteComBancada(palavraDeComando,comando,querSair);
+        } else {
+            querSair = menuAmbienteSemBancada(palavraDeComando,comando,querSair);
         }
 
         return querSair;
+    }
+
+    private boolean menuAmbienteComBancada(String palavraDeComando, Comando comando, boolean querSair){
+        querSair = false;
+        switch (palavraDeComando){
+            case "bancada":
+                menuBancada();
+                break;
+            case "ajuda":
+                imprimirAjuda();
+                break;
+            case "ir":
+                irParaAmbiente(comando);
+                break;
+            case "olhar":
+                olhar();
+                break;
+            case "vasculhar":
+                vasculhar(comando.getSegundaPalavra());
+                break;
+            case "inventario":
+                Inventario.olharInventario();
+                break;
+            case "sair":
+                querSair = sair(comando);
+                break;
+        }
+        return querSair;
+    }
+
+    private boolean menuAmbienteSemBancada(String palavraDeComando, Comando comando, boolean querSair){
+        querSair = false;
+        switch (palavraDeComando){
+            case "ajuda":
+                imprimirAjuda();
+                break;
+            case "ir":
+                irParaAmbiente(comando);
+                break;
+            case "olhar":
+                olhar();
+                break;
+            case "vasculhar":
+                vasculhar(comando.getSegundaPalavra());
+                break;
+            case "inventario":
+                Inventario.olharInventario();
+                break;
+            case "sair":
+                querSair = sair(comando);
+                break;
+        }
+        return querSair;
+    }
+
+    private void menuBancada(){
+        Bancada bancada = new Bancada();
+        System.out.println(bancada.getDescricao());
+        System.out.println(bancada.comandos());
+
+        Scanner scanner = new Scanner(System.in);
+        String comando = scanner.nextLine();
+        while (!comando.equalsIgnoreCase("voltar")){
+            if (bancada.validarEntrada(comando)){
+                switch (comando.toLowerCase()){
+                    case "compor":
+                        System.out.println(bancada.ListaItensCompostos());
+                        System.out.println("Digite o nome do item que deseja compor ou 'cancelar'");
+                        System.out.print("> ");
+                        bancada.comporItem(scanner.nextLine());
+                    case "inventario":
+                        Inventario.olharInventario();
+                    case "voltar":
+                        System.out.println("(Voce saiu da bancada)");
+                        break;
+                }
+            } else {
+                System.out.println("Eu nao entendi o que voce disse...");
+            }
+        }
     }
 
     // Implementacoes dos comandos do usuario
@@ -227,9 +302,10 @@ public class Jogo
      */
     private void imprimirAjuda() 
     {
-        System.out.println("Pelo nervosismo da situacao voce fica confuso para onde ir");
+        System.out.println("Pelo nervosismo da situacao voce fica confuso com o que fazer");
         System.out.println();
         System.out.println(analisador.mostrarComandos());
+        System.out.println();
     }
 
     /** 
@@ -295,11 +371,10 @@ public class Jogo
      * se nos queremos realmente sair do jogo.
      * @return true, se este comando sai do jogo, false, caso contrario
      */
-    private boolean sair(Comando comando) 
+    private boolean sair(Comando comando)
     {
         if(comando.temSegundaPalavra()) {
-            System.out.println("Deseja sair do jogo? Caso sim, digite somente 'sair'" +
-                    "\ncaso queira sair do ambiente utilize o comando 'ir'");
+            System.out.println("Deseja sair do jogo? Caso sim, digite somente 'sair'\n Ao sair ira perder todo o progresso!");
             return false;
         }
         else {

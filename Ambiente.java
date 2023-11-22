@@ -21,6 +21,7 @@ import java.util.Set;
 public class Ambiente 
 {
     private Random aleatorio;
+    private String nome;
     private String descricao;
     private HashMap<String, Ambiente> saidas;
     private ArrayList<Movel> moveis;
@@ -31,7 +32,8 @@ public class Ambiente
      * nao tem saidas. "descricao" eh algo como "uma cozinha"
      * @param descricao A descricao do ambiente.
      */
-    public Ambiente(String descricao) {
+    public Ambiente(String nome, String descricao) {
+        this.nome = nome;
         this.descricao = descricao;
         saidas = new HashMap<>();
         moveis = new ArrayList<>();
@@ -117,7 +119,11 @@ public class Ambiente
      */
     public String getMoveisAmbiente(){
         if (moveis.isEmpty()){
-            return "(Nao ha moveis nesse ambiente para vasculhar)";
+            return """ 
+                    =============================================
+                    (Nao ha moveis nesse ambiente para vasculhar)
+                    =============================================
+                    """;
         } else {
             StringBuilder moveisString = new StringBuilder("""
                     ========================================
@@ -132,8 +138,13 @@ public class Ambiente
         }
     }
 
+    public String getNome(){
+        return nome;
+    }
+
     public ArrayList<Item> transferirItensMovel(String movel){
         ArrayList<Item> itensTransferidos = new ArrayList<>();
+
         for (Movel m : moveis){
             if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
                 itensTransferidos = m.transferirItens();
