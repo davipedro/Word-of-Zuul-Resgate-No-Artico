@@ -19,22 +19,20 @@ import java.util.Scanner;
  */
 public class Analisador 
 {
-    private PalavrasComando palavrasDeComando;  // guarda todas as palavras de comando validas
-    private Scanner entrada;         // origem da entrada de comandos
+    private Scanner entrada;// origem da entrada de comandos
 
     /**
      * Cria um analisador para ler do terminal.
      */
     public Analisador() 
     {
-        palavrasDeComando = new PalavrasComando();
         entrada = new Scanner(System.in);
     }
 
     /**
      * @return O proximo comando do usuario
      */
-    public Comando pegarComando() 
+    public Comando pegarComando(String ambienteLocal, String ambienteComBancada)
     {
         String linha;   // guardara uma linha inteira
         String palavra1 = null;
@@ -56,18 +54,33 @@ public class Analisador
         tokenizer.close();
         // Agora verifica se esta palavra eh conhecida. Se for, cria um comando
         // com ela. Se nao, cria um comando "null" (para comando desconhecido)
-        if(palavrasDeComando.ehComando(palavra1)) {
-            return new Comando(palavra1, palavra2);
-        }
-        else {
-            return new Comando(null, palavra2); 
+        boolean bancada = ambienteLocal.equalsIgnoreCase(ambienteComBancada);
+
+        if (bancada){
+            if(ComandosBancada.ehComandoBancada(palavra1) || ComandosGerais.ehComandoGeral(palavra1)){
+                return new Comando(palavra1, palavra2);
+            }
+            else {
+                return new Comando(null, palavra2);
+            }
+        } else {
+            if(ComandosGerais.ehComandoGeral(palavra1)) {
+                return new Comando(palavra1, palavra2);
+            }
+            else {
+                return new Comando(null, palavra2);
+            }
         }
     }
 
     /**
-     * Imprime uma lista de palavras de comando válidas.
+     * Imprime uma lista de palavras de comando válidos.
      */
-    public String mostrarComandos(){
-        return palavrasDeComando.mostrarTodos();
+    public String mostrarComandos(Ambiente ambienteAtual){
+
+        if (ambienteAtual.getNome().equalsIgnoreCase(Jogo.getAmbienteComBancada())){
+            return ComandosGerais.mostrarComandos() + "BANCADA";
+        }
+        return ComandosGerais.mostrarComandos();
     }
 }
