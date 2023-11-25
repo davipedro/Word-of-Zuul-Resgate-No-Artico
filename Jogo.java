@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Scanner;
  *  "jogar".
  * 
  *  Essa classe principal cria e inicializa todas as outras: ela cria os
- *  ambientes, cria o analisador e comeca o jogo. Ela tambeme avalia e 
+ *  ambientes, cria o analisador e comeca o jogo. Ela tambem avalia e
  *  executa os comandos que o analisador retorna.
  * 
  * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
@@ -23,9 +22,10 @@ public class Jogo
     /**
      * Define qual ambiente tera a bancada.
      */
-    final String ambienteComBancada = "laboratorio";
+    private static final String ambienteComBancada = "laboratorio";
     private Analisador analisador;
     private Ambiente ambienteAtual;
+    private Ambiente ambienteLocal;
         
     /**
      * Cria o jogo e incializa seu mapa interno.
@@ -33,6 +33,7 @@ public class Jogo
     public Jogo() 
     {
         criarAmbientes();
+        ambienteLocal = ambienteAtual;
         analisador = new Analisador();
     }
 
@@ -86,7 +87,7 @@ public class Jogo
         //Leste
         corredorLeste.definirSaidas("norte", banheiro);
         corredorLeste.definirSaidas("sul", oficina);
-        corredorLeste.definirSaidas("oeste", corredorCentroOeste);
+        corredorLeste.definirSaidas("oeste", corredorCentroLeste);
 
         //inicializa os moveis do ambiente
         //colocar o nome dos moveis em MAIUSCULO
@@ -157,8 +158,8 @@ public class Jogo
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar() 
-    {            
+    public void jogar()
+    {
         imprimirBoasVindas();
 
         // Entra no loop de comando principal. Aqui nos repetidamente lemos
@@ -166,7 +167,8 @@ public class Jogo
                 
         boolean terminado = false;
         while (! terminado) {
-            Comando comando = analisador.pegarComando();
+            //System.out.println("(APAGAR)|Jogar| AmbienteLocal: " + ambienteLocal.getNome());
+            Comando comando = analisador.pegarComando(ambienteLocal.getNome(), ambienteComBancada);
             terminado = processarComando(comando);
         }
         System.out.println("Obrigado por jogar. Ate mais!");
@@ -177,14 +179,16 @@ public class Jogo
      */
     private void imprimirBoasVindas()
     {
+        TextoHistoria textoHistoria = new TextoHistoria();
+        textoHistoria.gerarBilhete();
         System.out.println();
-        System.out.println("Bem-vindo ao World of Zuul!");
-        System.out.println("World of Zuul eh um novo jogo de aventura, incrivelmente chato.");
+        System.out.println(textoHistoria.getBoasVindas());
+        System.out.println(textoHistoria.getHistoria());
         System.out.println("Digite 'ajuda' se voce precisar de ajuda.");
         System.out.println();
 
         imprimirInfoLocalizacao();
-        System.out.println(analisador.mostrarComandos());
+        System.out.println(analisador.mostrarComandos(ambienteAtual));
     }
 
     /**
@@ -203,8 +207,12 @@ public class Jogo
         }
 
         String palavraDeComando = comando.getPalavraDeComando().toLowerCase();
+        Ambiente saidaAtual = ambienteLocal.getSaida(comando.getSegundaPalavra());
+        if (!(saidaAtual == null)){
+            ambienteLocal = ambienteLocal.getSaida(comando.getSegundaPalavra());
+        }
 
-        if (ambienteAtual.getNome().equalsIgnoreCase(ambienteComBancada)){
+        if (ambienteLocal.getNome().equalsIgnoreCase(ambienteComBancada)){
             querSair = menuAmbienteComBancada(palavraDeComando,comando,querSair);
         } else {
             querSair = menuAmbienteSemBancada(palavraDeComando,comando,querSair);
@@ -268,23 +276,32 @@ public class Jogo
 
     private void menuBancada(){
         Bancada bancada = new Bancada();
-        System.out.println(bancada.getDescricao());
-        System.out.println(bancada.comandos());
-
         Scanner scanner = new Scanner(System.in);
-        String comando = scanner.nextLine();
+
+        System.out.println(bancada.getDescricao());
+        System.out.println(bancada.mostrarComandos());
+
+        String comando = "";
         while (!comando.equalsIgnoreCase("voltar")){
+
+            System.out.print("> ");
+            comando = scanner.nextLine();
+
             if (bancada.validarEntrada(comando)){
                 switch (comando.toLowerCase()){
                     case "compor":
                         System.out.println(bancada.ListaItensCompostos());
                         System.out.println("Digite o nome do item que deseja compor ou 'cancelar'");
                         System.out.print("> ");
-                        bancada.comporItem(scanner.nextLine());
-                    case "inventario":
-                        Inventario.olharInventario();
+                        System.out.println(bancada.comporItem(scanner.nextLine()));
+                        break;
+                    case "ajuda":
+                        System.out.println(bancada.getDescricao());
+                        System.out.println(bancada.mostrarComandos());
+                        break;
                     case "voltar":
-                        System.out.println("(Voce saiu da bancada)");
+                        System.out.println("Voce saiu de perto da bancada");
+                        System.out.println(analisador.mostrarComandos(ambienteAtual));
                         break;
                 }
             } else {
@@ -304,7 +321,7 @@ public class Jogo
     {
         System.out.println("Pelo nervosismo da situacao voce fica confuso com o que fazer");
         System.out.println();
-        System.out.println(analisador.mostrarComandos());
+        System.out.println(analisador.mostrarComandos(ambienteAtual));
         System.out.println();
     }
 
@@ -330,10 +347,16 @@ public class Jogo
         }
         else {
             ambienteAtual = proximoAmbiente;
-            
+            ambienteLocal = ambienteAtual;
+            //System.out.println("(APAGAR)|irParaAmbiente| AmbienteLocal: " + ambienteLocal.getNome());
+
             imprimirInfoLocalizacao();
-            System.out.println(analisador.mostrarComandos());
+            System.out.println(analisador.mostrarComandos(ambienteAtual));
         }
+    }
+
+    public static String getAmbienteComBancada(){
+        return ambienteComBancada;
     }
 
     public void imprimirInfoLocalizacao(){
@@ -343,26 +366,30 @@ public class Jogo
 
     private void olhar(){
         System.out.println(ambienteAtual.getDescricaoLonga());
-        System.out.println(analisador.mostrarComandos());
+        System.out.println(analisador.mostrarComandos(ambienteAtual));
     }
 
     /**
      * Acessa o movel do ambiente, pega os itens e passa para o inventario
      */
     private void vasculhar(String nomeMovel){
-        if (ambienteAtual.validaMovel(nomeMovel)){
-            String itensMovel = ambienteAtual.getDescricaoItensMovel(nomeMovel);
+        if (nomeMovel != null){
+            if (ambienteAtual.validaMovel(nomeMovel)){
+                String itensMovel = ambienteAtual.getDescricaoItensMovel(nomeMovel);
 
-            if (itensMovel != null){
-                System.out.println("Voce procura por itens interessantes:");
-                System.out.println(itensMovel);
-                Inventario.adicionarItens(ambienteAtual.transferirItensMovel(nomeMovel));
-                System.out.println("Voce leva todos os itens");
+                if (itensMovel != null){
+                    System.out.println("Voce procura por itens interessantes:");
+                    System.out.println(itensMovel);
+                    Inventario.adicionarArrayItens(ambienteAtual.transferirItensMovel(nomeMovel));
+                    System.out.println("Voce leva todos os itens");
+                } else {
+                    System.out.println("Nao ha nada util aqui");
+                }
             } else {
-                System.out.println("Nao ha nada util aqui");
+                System.out.println("Nao existe esse movel aqui");
             }
         } else {
-            System.out.println("Nao existe esse movel aqui");
+            System.out.println("Escreva vasculhar + (nome do movel)");
         }
     }
 

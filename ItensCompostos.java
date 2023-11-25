@@ -32,10 +32,19 @@ public enum ItensCompostos {
         return nome;
     }
 
-    public static String getItensCompostos(){
-        StringBuilder itens = new StringBuilder();
+    public static ItensCompostos getItemComposto(String nomeItem){
         for (ItensCompostos itemComposto : ItensCompostos.values()){
-            itens.append(itemComposto.getNome()).append(" ");
+            if (itemComposto.getNome().equalsIgnoreCase(nomeItem)){
+                return itemComposto;
+            }
+        }
+        return null;
+    }
+
+    public static String getItensCompostosString(){
+        StringBuilder itens = new StringBuilder(" - ");
+        for (ItensCompostos itemComposto : ItensCompostos.values()){
+            itens.append(itemComposto.getNome()).append(" - ");
         }
         return itens.toString();
     }

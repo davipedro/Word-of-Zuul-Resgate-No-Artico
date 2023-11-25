@@ -22,7 +22,7 @@ public enum ComandosGerais {
         this.comando = comando;
     }
 
-    public boolean ehComandoGeral(String umaString) {
+    public static boolean ehComandoGeral(String umaString) {
         for (ComandosGerais comandoValido : ComandosGerais.values()) {
             if (umaString.equalsIgnoreCase(comandoValido.comando))
                 return true;
@@ -31,7 +31,7 @@ public enum ComandosGerais {
         return false;
     }
 
-    public String mostrarComandos(){
+    public static String mostrarComandos(){
         StringBuilder comandosString = new StringBuilder("Seus comandos sao:\n");
         for (ComandosGerais comando : ComandosGerais.values()) {
             comandosString.append(comando).append(" ");
