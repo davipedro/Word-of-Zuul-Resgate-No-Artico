@@ -4,23 +4,24 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Classe Ambiente - um ambiente em um jogo adventure.
+ * Classe Ambiente - representa um ambiente do jogo.<br/>
  *
- * Esta classe eh parte da aplicacao "World of Zuul".
- * "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
+ * <br/>Modificada do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.<br/>
  *
- * Um "Ambiente" representa uma localizacao no cenario do jogo. Ele eh
+ * <br/>Um "Ambiente" representa uma localizacao no cenario do jogo. Ele eh
  * conectado aos outros ambientes atraves de saidas. As saidas sao
  * nomeadas como norte, sul, leste e oeste. Para cada direcao, o ambiente
  * guarda uma referencia para o ambiente vizinho, ou null se nao ha
- * saida naquela direcao.
- * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
- * @version 2011.07.31 (2016.02.01)
+ * saida naquela direcao. O ambiente tambem possui moveis e armazena os itens disponiveis
+ * a serem distribuidos aleatoriamente, dentro do ambiente entre os moveis, ao iniciar a aplicacao.
+ *
+ * @author  Davi Pedro - Base: Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * @version 2023.12.03 - 2011.07.31 (2016.02.01)
  */
 public class Ambiente 
 {
     private Random aleatorio;
+    private String nome;
     private String descricao;
     private HashMap<String, Ambiente> saidas;
     private ArrayList<Movel> moveis;
@@ -30,8 +31,10 @@ public class Ambiente
      * Cria um ambiente com a "descricao" passada. Inicialmente, ele
      * nao tem saidas. "descricao" eh algo como "uma cozinha"
      * @param descricao A descricao do ambiente.
+     * @author Davi Pedro
      */
-    public Ambiente(String descricao) {
+    public Ambiente(String nome, String descricao) {
+        this.nome = nome;
         this.descricao = descricao;
         saidas = new HashMap<>();
         moveis = new ArrayList<>();
@@ -42,10 +45,9 @@ public class Ambiente
     /**
      * Define as saidas do ambiente. Cada direcao ou leva a um
      * outro ambiente ou eh null (nenhuma saida para la).
-     * @param norte A saida norte.
-     * @param leste A saida leste.
-     * @param sul A saida sul.
-     * @param oeste A saida oeste.
+     * @param direcao A direcao da saida
+     * @param vizinho Ambiente vizinho, no qual sera acessado pela saida
+     * @author Davi Pedro
      */
     public void definirSaidas(String direcao, Ambiente vizinho){
         saidas.put(direcao, vizinho);
@@ -56,6 +58,7 @@ public class Ambiente
      * e adiciona o movel na lista de itens do ambiente
      * @param nome Nome do movel
      * @param descricao Descricao do movel
+     * @author Davi Pedro
      */
     public void definirMoveis(String nome, String descricao){
         Movel movel = new Movel(nome, descricao);
@@ -65,7 +68,8 @@ public class Ambiente
     /**
      * Retorna um inteiro aleatorio entre 0
      * e o tamanho do array de itens disponiveis
-     * @return 
+     * @return Numero aleatorio ou 0 se o ambiente possui apenas um item.
+     * @author Davi Pedro
      */
     public int gerarIndiceAleatorio(){
         if (itensDisponiveisAmbiente.size() > 1) {
@@ -77,9 +81,10 @@ public class Ambiente
     /**
      * Distribui os itens para os móveis
      * aleatoriamente, cada movel recebe um item por vez ate
-     * que nao tenha mais itens para distribuir, por fim remove o
-     * item dos itens itens disponiveis
-     * OBS: DEVE SER USADO APOS INSERIR TODOS OS ITENS DO QUARTO
+     * que nao ha mais itens para distribuir, por fim remove o
+     * item dos itens disponiveis <br/><br/>
+     * Nota: deve ser usado apos inserir todos os itens do quarto
+     * @author Davi Pedro
      */
     public void definirItensMoveis(){
         int indiceItem;
@@ -103,8 +108,9 @@ public class Ambiente
     /**
      * Adiciona um item no array de itens disponiveis
      * para os moveis
-     * @param nome
-     * @param descricao
+     * @param nome Nome do item
+     * @param descricao Descricao do item
+     * @author Davi Pedro
      */
     public void definirItensAmbiente(String nome, String descricao){
         Item item = new Item(nome, descricao);
@@ -112,12 +118,16 @@ public class Ambiente
     }
 
     /**
-     * Retorna os moveis presentes no ambiente
-     * @return os moveis em String
+     * @return Moveis presentes no ambiente
+     * @author Davi Pedro
      */
     public String getMoveisAmbiente(){
         if (moveis.isEmpty()){
-            return "(Nao ha moveis nesse ambiente para vasculhar)";
+            return """ 
+                    =============================================
+                    (Nao ha moveis nesse ambiente para vasculhar)
+                    =============================================
+                    """;
         } else {
             StringBuilder moveisString = new StringBuilder("""
                     ========================================
@@ -132,8 +142,23 @@ public class Ambiente
         }
     }
 
+    /**
+     * @return O nome do ambiente
+     * @author Davi Pedro
+     */
+    public String getNome(){
+        return nome;
+    }
+
+    /**
+     * Transfere os itens do movel
+     * @param movel Nome do movel
+     * @return Array de itens transferidos
+     * @author Davi Pedro
+     */
     public ArrayList<Item> transferirItensMovel(String movel){
         ArrayList<Item> itensTransferidos = new ArrayList<>();
+
         for (Movel m : moveis){
             if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
                 itensTransferidos = m.transferirItens();
@@ -142,6 +167,11 @@ public class Ambiente
         return itensTransferidos;
     }
 
+    /**
+     * @param movel Nome do movel
+     * @return Descricao dos itens que estao no movel
+     * @author Davi Pedro
+     */
     public String getDescricaoItensMovel(String movel){
         for (Movel m : moveis){
             if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
@@ -151,6 +181,12 @@ public class Ambiente
         return null;
     }
 
+    /**
+     * Verifica que o movel existe no ambiente
+     * @param movel Nome do movel
+     * @return Boolean
+     * @author Davi Pedro
+     */
     public boolean validaMovel(String movel){
         for (Movel m : moveis){
             if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
@@ -164,15 +200,17 @@ public class Ambiente
      * Retorna a sala que é alcançada se sairmos desta
      * sala na direção "direção". Se não houver nenhuma sala nessa
      * direção, retorna nulo.
+     * @param direcao Direcao que deseja consultar as saidas
+     * @return Saida disponivel
+     * @author Davi Pedro
      */
     public Ambiente getSaida(String direcao){
         return saidas.get(direcao);
     }
 
     /**
-     * Retorna uma descrição das saídas da sala,
-     * por exemplo, "Saidas: norte".
      * @return Uma descrição das saídas disponíveis.
+     * @author Davi Pedro
      */
     public String getDescricaoSaida(){
         StringBuilder saidasString = new StringBuilder("Saidas:");
@@ -185,6 +223,7 @@ public class Ambiente
 
     /**
      * @return A descricao do ambiente.
+     * @author Davi Pedro
      */
     public String getDescricao()
     {
@@ -192,10 +231,8 @@ public class Ambiente
     }
 
     /**
-     * Retorna uma descrição longa desse quarto, na forma:
-     *      Voce esta no cantina
-     *      Saidas: leste
-     * @return Uma descrição do quarto, incluindo saídas.
+     * @return Uma descrição do quarto, incluindo moveis e saidas.
+     * @author Davi Pedro
      */
     public String getDescricaoLonga(){
         return "========================================\nVoce esta " + getDescricao() + ".\n" + getMoveisAmbiente() + "\n" + getDescricaoSaida() ;

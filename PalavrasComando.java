@@ -13,7 +13,7 @@ public class PalavrasComando
 {
     // um vetor constante que guarda todas as palavras de comandos validas
     private static final String[] comandosValidos = {
-        "ir", "sair", "ajuda" ,"olhar", "vasculhar","inventario"
+        "ir", "olhar", "vasculhar", "inventario", "ajuda", "sair", "compor"
     };
 
     /**
@@ -35,7 +35,7 @@ public class PalavrasComando
      * Imprimir todos os comandos válidos para System. 
     */
     public String mostrarTodos(){
-        StringBuilder comandosString = new StringBuilder("Seus comandos são:\n");
+        StringBuilder comandosString = new StringBuilder("Seus comandos sao:\n");
         for (String comando : comandosValidos) {
             comandosString.append(comando).append(" ");
         }

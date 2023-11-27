@@ -1,5 +1,13 @@
 import java.util.ArrayList;
 
+/**
+ * Classe Movel - Essa classe define um movel do jogo.<br/>
+ *
+ * <br/>Um movel eh composto por nome e descricao e sua lista de itens.
+ *
+ * @author  Davi Pedro
+ * @version 2023.12.03
+ */
 public class Movel {
     private String nome;
     private String descricao;
@@ -10,6 +18,7 @@ public class Movel {
      * nao tem itens. "descricao" eh algo como "um armario velho"
      * @param nome O nome do movel
      * @param descricao A descricao do movel
+     * @author Davi Pedro
      */
     public Movel(String nome, String descricao){
         this.nome = nome;
@@ -20,6 +29,7 @@ public class Movel {
     /**
      * Retorna a descricao do movel
      * @return Descricao do movel
+     * @author Davi Pedro
      */
     public String getDescricao(){
         return descricao;
@@ -28,6 +38,7 @@ public class Movel {
     /**
      * Retorna o nome do movel
      * @return Nome do movel
+     * @author Davi Pedro
      */
     public String getNome(){
         return nome;
@@ -35,6 +46,7 @@ public class Movel {
 
     /**
      * Adiciona um item a lista de itens
+     * @author Davi Pedro
      */
     public void adicionarItem(Item item){
         itens.add(item);
@@ -43,6 +55,7 @@ public class Movel {
     /**
      * Retorna a informacao dos itens presentes no movel
      * @return Informacao dos itens no movel
+     * @author Davi Pedro
      */
     public String getItensDescricao(){
         if (itens.isEmpty()) {
@@ -58,6 +71,7 @@ public class Movel {
     /**
      * Transfere os itens do movel para outro lugar
      * @return Itens do movel
+     * @author Davi Pedro
      */
     public ArrayList<Item> transferirItens(){
         ArrayList<Item> itensTransferidos = new ArrayList<>(itens);
