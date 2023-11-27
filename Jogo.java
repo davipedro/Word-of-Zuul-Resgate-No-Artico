@@ -1,20 +1,17 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
- *  Essa eh a classe principal da aplicacao "World of Zull".
- *  "World of Zuul" eh um jogo de aventura muito simples, baseado em texto.
- *  Usuarios podem caminhar em um cenario. E eh tudo! Ele realmente
- *  precisa ser estendido para fazer algo interessante!
- * 
+ *  Essa eh a classe principal da aplicacao "World of Zull - Desafio no artico".
+ *  Modificada do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.
  *  Para jogar esse jogo, crie uma instancia dessa classe e chame o metodo
  *  "jogar".
- * 
  *  Essa classe principal cria e inicializa todas as outras: ela cria os
- *  ambientes, cria o analisador e comeca o jogo. Ela tambem avalia e
+ *  ambientes com seus moveis e itens, cria o analisador e comeca o jogo. Ela tambem avalia e
  *  executa os comandos que o analisador retorna.
  * 
- * @author  Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
- * @version 2011.07.31 (2016.02.01)
+ * @author  Davi Pedro - Base: Michael Kölling and David J. Barnes (traduzido por Julio Cesar Alves)
+ * @version 2023.12.03 - 2011.07.31 (2016.02.01)
  */
 
 public class Jogo 
@@ -38,7 +35,8 @@ public class Jogo
     }
 
     /**
-     * Cria todos os ambientes e liga as saidas deles
+     * Cria tudo relacionado aos ambientes: ambientes, saidas, moveis e itens basicos
+     * @author Davi Pedro
      */
     private void criarAmbientes()
     {
@@ -64,33 +62,31 @@ public class Jogo
         quartoLadoCozinha.definirSaidas("sul", corredorCentroOeste);
         quartoLadoBanheiro.definirSaidas("sul", corredorCentroLeste);
         banheiro.definirSaidas("sul", corredorLeste);
-        laboratorio.definirSaidas("norte", corredorLeste);
+        laboratorio.definirSaidas("norte", corredorOeste);
         salaDeComando.definirSaidas("norte", corredorCentroOeste);
         oficina.definirSaidas("norte", corredorLeste);
         oficina.definirSaidas("sul", garagem);
         garagem.definirSaidas("norte", oficina);
         garagem.definirSaidas("oeste", torre);
-        //corredor
-        //Oeste
+
         corredorOeste.definirSaidas("norte", cozinha);
         corredorOeste.definirSaidas("sul", laboratorio);
         corredorOeste.definirSaidas("leste", corredorCentroOeste);
-        //CentroOeste
+
         corredorCentroOeste.definirSaidas("norte", quartoLadoCozinha);
         corredorCentroOeste.definirSaidas("sul", salaDeComando);
         corredorCentroOeste.definirSaidas("oeste", corredorOeste);
         corredorCentroOeste.definirSaidas("leste", corredorCentroLeste);
-        //CentroLeste
+
         corredorCentroLeste.definirSaidas("norte", quartoLadoBanheiro);
         corredorCentroLeste.definirSaidas("oeste", corredorCentroOeste);
         corredorCentroLeste.definirSaidas("leste", corredorLeste);
-        //Leste
+
         corredorLeste.definirSaidas("norte", banheiro);
         corredorLeste.definirSaidas("sul", oficina);
         corredorLeste.definirSaidas("oeste", corredorCentroLeste);
 
         //inicializa os moveis do ambiente
-        //colocar o nome dos moveis em MAIUSCULO
         cozinha.definirMoveis("BALCAO", "um balcao de tamanho medio");
         cozinha.definirMoveis("ARMARIO", "um armario que contém algumas comidas enlatadas");
         cozinha.definirMoveis("PIA", "uma pia de cozinha");
@@ -118,8 +114,6 @@ public class Jogo
         garagem.definirMoveis("PRATELEIRA", "uma prateleira muito empoeirada");
         garagem.definirMoveis("CARRO", "um carro de expedicao, ele parece estar muito danificado, nao ha tempo para conserta-lo");
 
-
-
         //inicializa os itens disponiveis em cada ambiente
         cozinha.definirItensAmbiente("FACA DE CHEF", "uma faca muito afiada");
 
@@ -144,7 +138,6 @@ public class Jogo
         garagem.definirItensAmbiente("CORDA", "uma corda muito extensa e resistente");
 
         //define aleatoriamente quais itens vao estar em quais moveis do ambiente
-        //OBS: DEVE SER USADO APOS INSERIR TODOS OS ITENS DO QUARTO
         cozinha.definirItensMoveis();
         quartoLadoCozinha.definirItensMoveis();
         quartoLadoBanheiro.definirItensMoveis();
@@ -155,19 +148,15 @@ public class Jogo
 
         ambienteAtual = salaDeComando;
     }
+
     /**
      *  Rotina principal do jogo. Fica em loop ate terminar o jogo.
      */
-    public void jogar()
-    {
+    public void jogar() throws IOException {
         imprimirBoasVindas();
-
-        // Entra no loop de comando principal. Aqui nos repetidamente lemos
-        // comandos e os executamos ate o jogo terminar.
                 
         boolean terminado = false;
         while (! terminado) {
-            //System.out.println("(APAGAR)|Jogar| AmbienteLocal: " + ambienteLocal.getNome());
             Comando comando = analisador.pegarComando(ambienteLocal.getNome(), ambienteComBancada);
             terminado = processarComando(comando);
         }
@@ -175,10 +164,11 @@ public class Jogo
     }
 
     /**
-     * Imprime a mensagem de abertura para o jogador.
+     * Imprime a mensagem de abertura para o jogador, com a historia inicial do jogo,
+     * além de gerar o bilhete que o jogador utilizada para acompanhar a receita dos itens compostos.
+     * @author Davi Pedro
      */
-    private void imprimirBoasVindas()
-    {
+    private void imprimirBoasVindas() throws IOException {
         TextoHistoria textoHistoria = new TextoHistoria();
         textoHistoria.gerarBilhete();
         System.out.println();
@@ -193,9 +183,10 @@ public class Jogo
 
     /**
      * Dado um comando, processa-o (ou seja, executa-o).
-     * As opcoes de comando variam se o ambiente possui bancada ou nao
+     * As opcoes de comando variam se o ambiente possui bancada ou nao.
      * @param comando O Comando a ser processado.
-     * @return true se o comando finaliza o jogo.
+     * @return Boolean que indica se o jogo deve ser finalizado ou nao.
+     * @author Davi Pedro
      */
     private boolean processarComando(Comando comando) 
     {
@@ -221,6 +212,14 @@ public class Jogo
         return querSair;
     }
 
+    /**
+     * Menu disponivel no ambiente com a bancada
+     * @param palavraDeComando Primeira palavra do comando fornecido pelo usuario
+     * @param comando O comando completo
+     * @param querSair Retorno que indica se eh um comando para sair do jogo
+     * @return Boolean que indica se o jogo deve ser finalizado ou nao.
+     * @author Davi Pedro
+     */
     private boolean menuAmbienteComBancada(String palavraDeComando, Comando comando, boolean querSair){
         querSair = false;
         switch (palavraDeComando){
@@ -249,6 +248,14 @@ public class Jogo
         return querSair;
     }
 
+    /**
+     * Menu disponivel no ambiente sem a bancada
+     * @param palavraDeComando Primeira palavra do comando fornecido pelo usuario
+     * @param comando O comando completo fornecido pelo usuario
+     * @param querSair Retorno que indica se eh um comando para sair do jogo
+     * @return Boolean que indica se o jogo deve ser finalizado ou nao.
+     * @author Davi Pedro
+     */
     private boolean menuAmbienteSemBancada(String palavraDeComando, Comando comando, boolean querSair){
         querSair = false;
         switch (palavraDeComando){
@@ -274,6 +281,11 @@ public class Jogo
         return querSair;
     }
 
+    /**
+     * Menu da bancada, nela eh possivel compor os itens basicos em itens compostos,
+     * imprimir ajuda e voltar para o menu do ambiente
+     * @author Davi Pedro
+     */
     private void menuBancada(){
         Bancada bancada = new Bancada();
         Scanner scanner = new Scanner(System.in);
@@ -310,12 +322,11 @@ public class Jogo
         }
     }
 
-    // Implementacoes dos comandos do usuario
-
     /**
      * Printe informacoes de ajuda.
-     * Aqui nos imprimimos algo bobo e enigmatico e a lista de 
+     * Aqui nos imprimimos uma mensagem e a lista de
      * palavras de comando
+     * @author Davi Pedro
      */
     private void imprimirAjuda() 
     {
@@ -328,18 +339,18 @@ public class Jogo
     /** 
      * Tenta ir em uma direcao. Se existe uma saida entra no 
      * novo ambiente, caso contrario imprime mensagem de erro.
+     * @param comando O comando completo fornecido pelo usuario
+     * @author Davi Pedro
      */
     private void irParaAmbiente(Comando comando) 
     {
         if(!comando.temSegundaPalavra()) {
-            // se nao ha segunda palavra, nao sabemos pra onde ir...
             System.out.println("Ir pra onde?");
             return;
         }
 
         String direcao = comando.getSegundaPalavra();
 
-        // Tenta sair do ambiente atual
         Ambiente proximoAmbiente = ambienteAtual.getSaida(direcao);
 
         if (proximoAmbiente == null) {
@@ -348,29 +359,43 @@ public class Jogo
         else {
             ambienteAtual = proximoAmbiente;
             ambienteLocal = ambienteAtual;
-            //System.out.println("(APAGAR)|irParaAmbiente| AmbienteLocal: " + ambienteLocal.getNome());
 
             imprimirInfoLocalizacao();
             System.out.println(analisador.mostrarComandos(ambienteAtual));
         }
     }
 
+    /**
+     * @return Nome do ambiente que possui a bancada
+     * @author Davi Pedro
+     */
     public static String getAmbienteComBancada(){
         return ambienteComBancada;
     }
 
+    /**
+     * Imprime a descricao do local
+     * @author Davi Pedro
+     */
     public void imprimirInfoLocalizacao(){
         System.out.println(ambienteAtual.getDescricaoLonga());
         System.out.println();
     }
 
+    /**
+     * Imprime a descricao do local e os comandos disponiveis no ambiente atual
+     * @author Davi Pedro
+     */
     private void olhar(){
         System.out.println(ambienteAtual.getDescricaoLonga());
         System.out.println(analisador.mostrarComandos(ambienteAtual));
     }
 
     /**
-     * Acessa o movel do ambiente, pega os itens e passa para o inventario
+     * Acessa o movel do ambiente, pega os itens do movel e transfere para o inventario,
+     * caso o movel nao possua itens exibe uma mensagem informando o jogador.
+     * @param nomeMovel Nome do movel ter os itens vasculhados
+     * @author Davi Pedro
      */
     private void vasculhar(String nomeMovel){
         if (nomeMovel != null){
@@ -396,7 +421,8 @@ public class Jogo
     /** 
      * "Sair" foi digitado. Verifica o resto do comando pra ver
      * se nos queremos realmente sair do jogo.
-     * @return true, se este comando sai do jogo, false, caso contrario
+     * @return Boolean que indica se o jogo deve ser finalizado ou nao
+     * @author Davi Pedro
      */
     private boolean sair(Comando comando)
     {
@@ -405,7 +431,7 @@ public class Jogo
             return false;
         }
         else {
-            return true;  // sinaliza que nos queremos sair
+            return true;
         }
     }
 }
