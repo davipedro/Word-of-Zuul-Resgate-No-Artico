@@ -90,4 +90,23 @@ public class Inventario {
         return itens;
     }
 
+    public static ArrayList<String> compostosNaoCriados(){
+        ArrayList<ItensCompostos> itensCompostos = ItensCompostos.getItensCompostos();
+
+        for (ItensCompostos itemComposto : itensCompostos){
+            for (Item item : inventario){
+                if (itemComposto.getNome().equalsIgnoreCase(item.getNome())){
+                    itensCompostos.remove(itemComposto);
+                }
+            }
+        }
+        ArrayList<String> compostosNaoCriados = new ArrayList<>();
+
+        for (ItensCompostos item : itensCompostos){
+            compostosNaoCriados.add(item.getNome());
+        }
+
+        return compostosNaoCriados;
+    }
+
 }
