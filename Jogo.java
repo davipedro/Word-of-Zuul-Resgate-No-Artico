@@ -20,18 +20,22 @@ public class Jogo
      * Define qual ambiente tera a bancada.
      */
     private static final String ambienteComBancada = "laboratorio";
+    private static final String ambienteComSaida = "garagem";
+    private static final String DirecaoSaidaTorre = "oeste";
     private Analisador analisador;
     private Ambiente ambienteAtual;
     private Ambiente ambienteLocal;
+    private Scanner scanner;
         
     /**
-     * Cria o jogo e incializa seu mapa interno.
+     * Cria o jogo e incializa seu mapa interno, ambiente local, ambiente com a saida da base, scanner e analisador.
      */
     public Jogo() 
     {
         criarAmbientes();
         ambienteLocal = ambienteAtual;
         analisador = new Analisador();
+        scanner = new Scanner(System.in);
     }
 
     /**
@@ -41,7 +45,7 @@ public class Jogo
     private void criarAmbientes()
     {
         Ambiente cozinha, quartoLadoCozinha, quartoLadoBanheiro, banheiro, corredorOeste,corredorCentroOeste,corredorCentroLeste, corredorLeste, laboratorio, salaDeComando, oficina, garagem, torre;
-      
+
         // cria os ambientes
         laboratorio = new Ambiente("laboratorio","no laboratório da estacao");
         cozinha = new Ambiente("cozinha","na cozinha da estacao");
@@ -67,7 +71,8 @@ public class Jogo
         oficina.definirSaidas("norte", corredorLeste);
         oficina.definirSaidas("sul", garagem);
         garagem.definirSaidas("norte", oficina);
-        garagem.definirSaidas("oeste", torre);
+
+        garagem.definirSaidas(DirecaoSaidaTorre, torre);
 
         corredorOeste.definirSaidas("norte", cozinha);
         corredorOeste.definirSaidas("sul", laboratorio);
@@ -230,7 +235,7 @@ public class Jogo
                 imprimirAjuda();
                 break;
             case "ir":
-                irParaAmbiente(comando);
+                querSair = irParaAmbiente(comando);
                 break;
             case "olhar":
                 olhar();
@@ -263,7 +268,7 @@ public class Jogo
                 imprimirAjuda();
                 break;
             case "ir":
-                irParaAmbiente(comando);
+                querSair = irParaAmbiente(comando);
                 break;
             case "olhar":
                 olhar();
@@ -288,7 +293,6 @@ public class Jogo
      */
     private void menuBancada(){
         Bancada bancada = new Bancada();
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println(bancada.getDescricao());
         System.out.println(bancada.mostrarComandos());
@@ -323,46 +327,75 @@ public class Jogo
     }
 
     /**
-     * Printe informacoes de ajuda.
-     * Aqui nos imprimimos uma mensagem e a lista de
+     * Printa informacoes de ajuda.
+     * Imprime a lista de
      * palavras de comando
      * @author Davi Pedro
      */
     private void imprimirAjuda() 
     {
-        System.out.println("Pelo nervosismo da situacao voce fica confuso com o que fazer");
-        System.out.println();
         System.out.println(analisador.mostrarComandos(ambienteAtual));
-        System.out.println();
     }
 
     /** 
      * Tenta ir em uma direcao. Se existe uma saida entra no 
-     * novo ambiente, caso contrario imprime mensagem de erro.
+     * novo ambiente, caso contrario imprime mensagem de erro. <br/>
+     *
+     * <br/> Caso o ambiente seja o ambiente com saida e a saida seja a saida da base,
+     * e o jogador opte por sair, ele
+     *
      * @param comando O comando completo fornecido pelo usuario
      * @author Davi Pedro
      */
-    private void irParaAmbiente(Comando comando) 
+    private boolean irParaAmbiente(Comando comando)
     {
+        boolean querSair = false;
         if(!comando.temSegundaPalavra()) {
             System.out.println("Ir pra onde?");
-            return;
+            return false;
         }
 
         String direcao = comando.getSegundaPalavra();
 
         Ambiente proximoAmbiente = ambienteAtual.getSaida(direcao);
-
         if (proximoAmbiente == null) {
             System.out.println("Nao ha passagem!");
-        }
-        else {
+        } else if (ambienteAtual.getNome().equalsIgnoreCase(ambienteComSaida) && proximoAmbiente.getNome().equalsIgnoreCase("torre")) {
+            querSair = sairDaBase();
+        } else {
             ambienteAtual = proximoAmbiente;
             ambienteLocal = ambienteAtual;
 
             imprimirInfoLocalizacao();
             System.out.println(analisador.mostrarComandos(ambienteAtual));
         }
+        return querSair;
+    }
+
+    /**
+     * Imprime um pedido de confirmacao da saida da base
+     * @return Boolean que indica se o jogador quer ou nao sair da base
+     * @author Davi Pedro
+     */
+    private boolean sairDaBase(){
+        String escolha = "";
+        System.out.println("Tem certeza que deseja sair da base? Nao podera voltar");
+        System.out.println("Saia apenas quando estiver pronto! É sua decisao..");
+        System.out.println("Digite SIM ou NAO");
+        System.out.print("> ");
+        escolha = scanner.nextLine().toUpperCase();
+
+        while (!(escolha.equalsIgnoreCase("SIM")) && !(escolha.equalsIgnoreCase("NAO"))) {
+            System.out.println("Nao entendi sua resposta..");
+            escolha = scanner.nextLine().toUpperCase();
+        }
+        if (escolha.equalsIgnoreCase("sim")){
+            System.out.println(TextoHistoria.getFinal());
+            return true;
+        } else {
+            imprimirAjuda();
+        }
+        return false;
     }
 
     /**

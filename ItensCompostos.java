@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
- * Enum ItenCompostos - Esse enum define e fornece os comandos dos itens que podem ser criados
+ * Enum ItensCompostos - Esse enum define e fornece os comandos dos itens que podem ser criados
  * no jogo.<br/>
  *
  * <br/>Um item composto eh um item formado por outros itens para que seja possivel concluir
@@ -69,6 +70,12 @@ public enum ItensCompostos {
             }
         }
         return null;
+    }
+
+    public static ArrayList<ItensCompostos> getItensCompostos(){
+        ArrayList<ItensCompostos> itensCompostos = new ArrayList<>();
+        itensCompostos.addAll(List.of(ItensCompostos.values()));
+        return itensCompostos;
     }
 
     /**
