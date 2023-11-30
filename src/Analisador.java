@@ -1,14 +1,16 @@
+package src;
+
 import java.util.Scanner;
 
 /**
- * Classe Analisador - analisa as entradas do jogador.<br/>
+ * Classe src.Analisador - analisa as entradas do jogador.<br/>
  *
  * <br/>Modificada do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.<br/>
  * 
  * <br/> Esse analisador le a entrada do usuario e tenta interpreta-la como um
  * comando "Adventure". Cada vez que eh chamado ele le uma linha do terminal
  * e tenta interpretar a linha como um comando de duas palavras. Ele retorna
- * o comando como um objeto da classe Comando. <br/>
+ * o comando como um objeto da classe src.Comando. <br/>
  *
  * <br/> O analisador tem um conjunto de palavras de comando conhecidas. Ele compara
  * a entrada do usuario com os comandos conhecidos, e se a entrada nao eh um

@@ -1,7 +1,9 @@
+package src;
+
 import java.util.ArrayList;
 
 /**
- * Classe Movel - Essa classe define um movel do jogo.<br/>
+ * Classe src.Movel - Essa classe define um movel do jogo.<br/>
  *
  * <br/>Um movel eh composto por nome e descricao e sua lista de itens.
  *

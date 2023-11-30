@@ -1,7 +1,9 @@
+package src;
+
 import java.util.ArrayList;
 
 /**
- * Classe Inventario - Essa classe define e fornece os comandos do inventario do jogador.<br/>
+ * Classe src.Inventario - Essa classe define e fornece os comandos do inventario do jogador.<br/>
  *
  * <br/>Essa classe fornece um ArrayList que representa o inventario do jogador, tambem fornece
  * metodos para inserir, remover e visualizar os itens do inventario.
@@ -23,7 +25,7 @@ public class Inventario {
 
     /**
      * Adiciona um unico item ao inventario.
-     * @param item Item a ser adicionado no inventario
+     * @param item src.Item a ser adicionado no inventario
      * @author Davi Pedro
      */
     public static void adicionarItem(Item item){
@@ -58,7 +60,7 @@ public class Inventario {
 
     /**
      * Remove os itens que o inventario possui em comum com
-     * Array de itens para remocao. Ele cria um array de Item onde
+     * Array de itens para remocao. Ele cria um array de src.Item onde
      * todo item que inventario possui em comum com itensRemocao eh
      * adicionado nele. Por fim remove-se todos os itens que itensParaRemover
      * possui em comum no inventario.

@@ -1,5 +1,7 @@
+package src;
+
 /**
- * Classe Item - Essa classe define um item do jogo.<br/>
+ * Classe src.Item - Essa classe define um item do jogo.<br/>
  *
  * <br/>Um item eh composto por nome e descricao.
  *

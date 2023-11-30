@@ -1,14 +1,16 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
 /**
- * Classe Ambiente - representa um ambiente do jogo.<br/>
+ * Classe src.Ambiente - representa um ambiente do jogo.<br/>
  *
  * <br/>Modificada do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.<br/>
  *
- * <br/>Um "Ambiente" representa uma localizacao no cenario do jogo. Ele eh
+ * <br/>Um "src.Ambiente" representa uma localizacao no cenario do jogo. Ele eh
  * conectado aos outros ambientes atraves de saidas. As saidas sao
  * nomeadas como norte, sul, leste e oeste. Para cada direcao, o ambiente
  * guarda uma referencia para o ambiente vizinho, ou null se nao ha
@@ -46,7 +48,7 @@ public class Ambiente
      * Define as saidas do ambiente. Cada direcao ou leva a um
      * outro ambiente ou eh null (nenhuma saida para la).
      * @param direcao A direcao da saida
-     * @param vizinho Ambiente vizinho, no qual sera acessado pela saida
+     * @param vizinho src.Ambiente vizinho, no qual sera acessado pela saida
      * @author Davi Pedro
      */
     public void definirSaidas(String direcao, Ambiente vizinho){

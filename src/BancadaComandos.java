@@ -1,3 +1,5 @@
+package src;
+
 public enum BancadaComandos {
     COMPOR("compor"),
     VOLTAR("voltar");

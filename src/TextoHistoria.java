@@ -1,8 +1,10 @@
+package src;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Classe TextoHistoria - Essa classe define os textos que aparecerao no jogo e da geracao do bilhete.<br/>
+ * Classe src.TextoHistoria - Essa classe define os textos que aparecerao no jogo e da geracao do bilhete.<br/>
  *
  * <br/> O bilhete eh um item externo do jogo, um arquivo de texto, que o jogador deve abrir para consultar
  * a receita dos itens compostos, a receita apresentada esta de acordo com os itens definidos no Enum de
@@ -143,7 +145,7 @@ public class TextoHistoria {
     }
 
     /**
-     * Busca os itens que estao definidos no jogo, em ItensCompostos
+     * Busca os itens que estao definidos no jogo, em src.ItensCompostos
      * @return Uma string com o nome do item composto e sua receita para cada
      * item composto descrito no jogo
      * @author Davi Pedro

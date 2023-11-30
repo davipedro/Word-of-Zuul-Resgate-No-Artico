@@ -1,3 +1,5 @@
+package src;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -189,7 +191,7 @@ public class Jogo
     /**
      * Dado um comando, processa-o (ou seja, executa-o).
      * As opcoes de comando variam se o ambiente possui bancada ou nao.
-     * @param comando O Comando a ser processado.
+     * @param comando O src.Comando a ser processado.
      * @return Boolean que indica se o jogo deve ser finalizado ou nao.
      * @author Davi Pedro
      */

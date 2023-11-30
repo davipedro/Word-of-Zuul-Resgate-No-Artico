@@ -1,5 +1,7 @@
+package src;
+
 /**
- * Enum ComandosBancada - Esse enum define e fornece os comandos da bancada,
+ * Enum src.ComandosBancada - Esse enum define e fornece os comandos da bancada,
  * alem de um metodo para validar se um comando pertence aos comandos da bancada<br/>
  *
  * <br/>A bancada eh um objeto especial, que eh tratado como um comando, no qual
@@ -25,7 +27,7 @@ public enum ComandosBancada {
 
     /**
      * Verifica se o comando fornecido eh um comando da bancada
-     * @param comando Comando a ser verificado
+     * @param comando src.Comando a ser verificado
      * @return Boolean que indica se o comando eh valido ou nao
      */
     public static boolean ehComandoBancada(String comando){

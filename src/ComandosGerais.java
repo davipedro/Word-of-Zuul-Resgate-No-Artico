@@ -1,9 +1,11 @@
+package src;
+
 /**
- * Enum ComandosGerais - Esse enum define e fornece os comandos da bancada.<br/>
+ * Enum src.ComandosGerais - Esse enum define e fornece os comandos da bancada.<br/>
  *
  *<br/>Modificado do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.<br/>
  *
- * <br/>(Originalmente uma classe do codigo do jogo "World of Zuul" chamada PalavrasComando
+ * <br/>(Originalmente uma classe do codigo do jogo "World of Zuul" chamada src.PalavrasComando
  * que foi transformada para um Enum por questoes de padronizacao e por se tratar de um conjunto
  * fixo de elementos).<br/>
  * <br/>Esse enum guarda uma enumeracao de todos os comandos gerais do jogo, ou seja, aqueles que sao

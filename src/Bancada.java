@@ -1,7 +1,9 @@
+package src;
+
 import java.util.ArrayList;
 
 /**
- * Classe Bancada - Essa classe define e fornece as funcionalidades da bancada.<br/>
+ * Classe src.Bancada - Essa classe define e fornece as funcionalidades da bancada.<br/>
  *
  * <br/> A bancada eh um objeto especial, que eh tratado como um comando, no qual
  * permite o jogador a compor seus itens necessarios para avancar no jogo, ela interage
@@ -71,7 +73,7 @@ public class Bancada {
                 if ((enumParaItem(nomeItem) != null)){
                     Item itemComposto = enumParaItem(nomeItem);
                     Inventario.adicionarItem(itemComposto);
-                    return "Item composto com sucesso!";
+                    return "src.Item composto com sucesso!";
                 }
             } else {
                 return "Voce nao possui os itens necessarios";
@@ -84,7 +86,7 @@ public class Bancada {
      * Recebe o nome referente ao item composto e retorna um item com as caracteristicas do item composto,
      * caso nao seja possivel obter o item composto eh retornado null
      * @param nomeItem Nome do item composto
-     * @return Item ou nulo
+     * @return src.Item ou nulo
      * @author Davi Pedro
      */
     public Item enumParaItem(String nomeItem){
@@ -112,7 +114,7 @@ public class Bancada {
 
     /**
      * Verifica se a palavra eh um comando valido na bancada
-     * @param entrada Comando a ser verificado
+     * @param entrada src.Comando a ser verificado
      * @return Boolean que indica se eh um comando da bancada ou nao
      * @author Davi Pedro
      */
@@ -130,7 +132,7 @@ public class Bancada {
 
     /**
      * Mostra todos os comandos validos <br/>
-     * (O comando 'Bancada' nao eh um comando valido quando ja se esta na bancada)
+     * (O comando 'src.Bancada' nao eh um comando valido quando ja se esta na bancada)
      * @return Uma string com os comandos validos
      * @author Davi Pedro
      */
