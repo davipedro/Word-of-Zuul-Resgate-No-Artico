@@ -80,4 +80,11 @@ public class Movel {
         itens.clear();
         return itensTransferidos;
     }
+
+
+    @Override
+    public String toString() {
+        return getNome() + ": " + getDescricao() + "\n";
+    }
+
 }

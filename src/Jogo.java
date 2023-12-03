@@ -3,6 +3,16 @@ package src;
 import java.io.IOException;
 import java.util.Scanner;
 
+import src.ambientes.Banheiro;
+import src.ambientes.Corredor;
+import src.ambientes.Cozinha;
+import src.ambientes.Garagem;
+import src.ambientes.Laboratorio;
+import src.ambientes.Oficina;
+import src.ambientes.SalaComando;
+import src.ambientes.quarto.QuartoBanheiro;
+import src.ambientes.quarto.QuartoCozinha;
+
 /**
  *  Essa eh a classe principal da aplicacao "World of Zull - Desafio no artico".
  *  Modificada do jogo "World of Zuul": um jogo de aventura muito simples, baseado em texto.
@@ -28,7 +38,7 @@ public class Jogo
     private Ambiente ambienteAtual;
     private Ambiente ambienteLocal;
     private Scanner scanner;
-        
+
     /**
      * Cria o jogo e incializa seu mapa interno, ambiente local, ambiente com a saida da base, scanner e analisador.
      */
@@ -49,18 +59,18 @@ public class Jogo
         Ambiente cozinha, quartoLadoCozinha, quartoLadoBanheiro, banheiro, corredorOeste,corredorCentroOeste,corredorCentroLeste, corredorLeste, laboratorio, salaDeComando, oficina, garagem, torre;
 
         // cria os ambientes
-        laboratorio = new Ambiente("laboratorio","no laboratório da estacao");
-        cozinha = new Ambiente("cozinha","na cozinha da estacao");
-        quartoLadoCozinha = new Ambiente("quartoLadoCozinha","no quarto ao lado da cozinha");
-        quartoLadoBanheiro = new Ambiente("quartoLadoBanheiro","no quarto ao lado do banheiro");
-        banheiro = new Ambiente("banheiro","no banheiro da estacao");
-        corredorOeste = new Ambiente("corredorOeste","no lado oeste do corredor");
-        corredorCentroOeste = new Ambiente("corredorCentroOeste","no centro-oeste do corredor");
-        corredorCentroLeste = new Ambiente("corredorCentroLeste","no centro-leste do corredor");
-        corredorLeste = new Ambiente("corredorLeste","no lado leste do corredor");
-        salaDeComando = new Ambiente("salaDeComando","na sala de comando da estacao");
-        oficina = new Ambiente("oficina","na oficina da estacao");
-        garagem = new Ambiente("garagem","na garagem da estacao");
+        laboratorio = new Laboratorio("laboratorio","no laboratório da estacao");
+        cozinha = new Cozinha("cozinha","na cozinha da estacao");
+        quartoLadoCozinha = new QuartoCozinha("quartoLadoCozinha","no quarto ao lado da cozinha");
+        quartoLadoBanheiro = new QuartoBanheiro("quartoLadoBanheiro","no quarto ao lado do banheiro");
+        banheiro = new Banheiro("banheiro","no banheiro da estacao");
+        corredorOeste = new Corredor("corredorOeste","no lado oeste do corredor");
+        corredorCentroOeste = new Corredor("corredorCentroOeste","no centro-oeste do corredor");
+        corredorCentroLeste = new Corredor("corredorCentroLeste","no centro-leste do corredor");
+        corredorLeste = new Corredor("corredorLeste","no lado leste do corredor");
+        salaDeComando = new SalaComando("salaDeComando","na sala de comando da estacao");
+        oficina = new Oficina("oficina","na oficina da estacao");
+        garagem = new Garagem("garagem","na garagem da estacao");
         torre = new Ambiente("torre","na torre da estacao");
         
         // inicializa as saidas dos ambientes
@@ -93,57 +103,6 @@ public class Jogo
         corredorLeste.definirSaidas("sul", oficina);
         corredorLeste.definirSaidas("oeste", corredorCentroLeste);
 
-        //inicializa os moveis do ambiente
-        cozinha.definirMoveis("BALCAO", "um balcao de tamanho medio");
-        cozinha.definirMoveis("ARMARIO", "um armario que contém algumas comidas enlatadas");
-        cozinha.definirMoveis("PIA", "uma pia de cozinha");
-
-        quartoLadoCozinha.definirMoveis("BELICHE", "uma beliche onde dorme voce e um dos seus colegas de expedicao ");
-        quartoLadoCozinha.definirMoveis("GUARDA-ROUPA", "um guarda-roupa grande, ele parece suprir voce e seu colega");
-        quartoLadoCozinha.definirMoveis("MESA", "uma mesa pequena que voce usa para fazer anotacoes");
-
-        quartoLadoBanheiro.definirMoveis("BELICHE", "uma beliche onde dorme dois dos seus colegas de expedicao");
-        quartoLadoBanheiro.definirMoveis("GUARDA-ROUPA", "um guarda-roupa nao tao grande, seus colegas vivem reclamando disso");
-        quartoLadoBanheiro.definirMoveis("MESA", "uma mesa pequena cheia de copos sujos de cafe");
-
-        banheiro.definirMoveis("ARMARIO", "um armario com itens de banheiro");
-
-        laboratorio.definirMoveis("ARMARIO", "um armario grande");
-        laboratorio.definirMoveis("PRATELEIRA", "uma prateleira grande de metal");
-        laboratorio.definirMoveis("MESA", "uma mesa de madeira com uma gaveta entreaberta");
-
-        oficina.definirMoveis("ARMARIO", "armário de metal com duas portas e quatro gavetas ");
-        oficina.definirMoveis("PRATELEIRA", "uma prateleira grande de metal");
-        oficina.definirMoveis("SUCATA", "uma pilha de sucata de metal");
-        oficina.definirMoveis("MALETA","uma maleta de ferramentas");
-
-        garagem.definirMoveis("LIXEIRA", "uma lixeira grande de plastico com rodas");
-        garagem.definirMoveis("PRATELEIRA", "uma prateleira muito empoeirada");
-        garagem.definirMoveis("CARRO", "um carro de expedicao, ele parece estar muito danificado, nao ha tempo para conserta-lo");
-
-        //inicializa os itens disponiveis em cada ambiente
-        cozinha.definirItensAmbiente("FACA DE CHEF", "uma faca muito afiada");
-
-        quartoLadoCozinha.definirItensAmbiente("TESOURA", "uma tesoura de costura");
-        quartoLadoCozinha.definirItensAmbiente("CASACO RASGADO", "Um casaco velho e rasgado");
-
-        quartoLadoBanheiro.definirItensAmbiente("LINHA", "um rolo pequeno de linha de costura");
-        quartoLadoBanheiro.definirItensAmbiente("AGULHA", "uma agulha de custura, sempre util para remendar roupas");
-
-        banheiro.definirItensAmbiente("LAMPADA", "uma lampada de led reserva");
-        
-        laboratorio.definirItensAmbiente("BATERIA", "uma bateria de 9V");
-        laboratorio.definirItensAmbiente("PLACA DE CIRCUITO IMPRESSO", "uma placa com circuitos que conectam e controlam aparelhos");
-
-        oficina.definirItensAmbiente("FIO DE COBRE", "um fio extenso de cobre");
-        oficina.definirItensAmbiente("KIT DE SOLDA", "um kit de solda com ferro de solda e estanho");
-        oficina.definirItensAmbiente("CANO DE METAL", "um cano de metal nao muito grande");
-        oficina.definirItensAmbiente("FITA ISOLANTE GRANDE", "uma fita isolante grande de cor preta");
-
-        garagem.definirItensAmbiente("BATERIA DE CARRO", "uma bateria de carro");
-        garagem.definirItensAmbiente("FITA ISOLANTE PEQUENA", "uma pequena fita isolante de cor preta");
-        garagem.definirItensAmbiente("CORDA", "uma corda muito extensa e resistente");
-
         //define aleatoriamente quais itens vao estar em quais moveis do ambiente
         cozinha.definirItensMoveis();
         quartoLadoCozinha.definirItensMoveis();
@@ -164,7 +123,7 @@ public class Jogo
                 
         boolean terminado = false;
         while (! terminado) {
-            Comando comando = analisador.pegarComando(ambienteLocal.getNome(), ambienteComBancada);
+            Comando comando = analisador.pegarComando(ambienteLocal);
             terminado = processarComando(comando);
         }
         System.out.println("Obrigado por jogar. Ate mais!");
@@ -210,7 +169,7 @@ public class Jogo
             ambienteLocal = ambienteLocal.getSaida(comando.getSegundaPalavra());
         }
 
-        if (ambienteLocal.getNome().equalsIgnoreCase(ambienteComBancada)){
+        if (ambienteLocal.getMoveis().get("BANCADA") != null){
             querSair = menuAmbienteComBancada(palavraDeComando,comando,querSair);
         } else {
             querSair = menuAmbienteSemBancada(palavraDeComando,comando,querSair);
