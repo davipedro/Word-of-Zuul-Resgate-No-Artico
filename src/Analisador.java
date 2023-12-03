@@ -78,7 +78,7 @@ public class Analisador
      */
     public String mostrarComandos(Ambiente ambienteAtual){
 
-        if (ambienteAtual.getNome().equalsIgnoreCase(Jogo.getAmbienteComBancada())){
+        if (ambienteAtual.getMoveis().get("BANCADA") != null){
             return ComandosGerais.mostrarComandos() + "BANCADA";
         }
         return ComandosGerais.mostrarComandos();
