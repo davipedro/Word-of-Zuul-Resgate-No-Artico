@@ -360,14 +360,6 @@ public class Jogo
     }
 
     /**
-     * @return Nome do ambiente que possui a bancada
-     * @author Davi Pedro
-     */
-    public static String getAmbienteComBancada(){
-        return ambienteComBancada;
-    }
-
-    /**
      * Imprime a descricao do local
      * @author Davi Pedro
      */
