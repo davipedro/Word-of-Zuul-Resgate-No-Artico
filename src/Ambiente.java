@@ -1,7 +1,10 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -26,7 +29,7 @@ public class Ambiente
     private String nome;
     private String descricao;
     private HashMap<String, Ambiente> saidas;
-    private ArrayList<Movel> moveis;
+    private HashMap<String, Movel> moveis;
     private ArrayList<Item> itensDisponiveisAmbiente;
 
     /**
@@ -39,7 +42,7 @@ public class Ambiente
         this.nome = nome;
         this.descricao = descricao;
         saidas = new HashMap<>();
-        moveis = new ArrayList<>();
+        moveis = new HashMap<>();
         itensDisponiveisAmbiente = new ArrayList<>();
         aleatorio = new Random();
     }
@@ -64,7 +67,7 @@ public class Ambiente
      */
     public void definirMoveis(String nome, String descricao){
         Movel movel = new Movel(nome, descricao);
-        moveis.add(movel);
+        moveis.put(nome, movel);
     }
 
     /**
@@ -75,7 +78,7 @@ public class Ambiente
      */
     public int gerarIndiceAleatorio(){
         if (itensDisponiveisAmbiente.size() > 1) {
-            return aleatorio.nextInt(itensDisponiveisAmbiente.size());
+            return aleatorio.nextInt(itensDisponiveisAmbiente.size() -1);
         }
         return 0;
     }
@@ -89,22 +92,13 @@ public class Ambiente
      * @author Davi Pedro
      */
     public void definirItensMoveis(){
-        int indiceItem;
-        int indiceMovel=0;
-        Item itemAleatorio;
-        Movel movelAtual;
-            while (!(itensDisponiveisAmbiente.isEmpty())) {
-                movelAtual = moveis.get(indiceMovel);
-                indiceItem = gerarIndiceAleatorio();
-                itemAleatorio = itensDisponiveisAmbiente.get(indiceItem); 
-                movelAtual.adicionarItem(itemAleatorio);
+        for (String movelNome : moveis.keySet()) {
+            int indiceItem = gerarIndiceAleatorio();
+            if (itensDisponiveisAmbiente.size() > 0) {
+                moveis.get(movelNome).adicionarItem(itensDisponiveisAmbiente.get(indiceItem));
                 itensDisponiveisAmbiente.remove(indiceItem);
-
-                indiceMovel++;
-                if (indiceMovel == moveis.size()) {
-                    indiceMovel = 0;
-                }
             }
+        }
     }
     
     /**
@@ -117,6 +111,10 @@ public class Ambiente
     public void definirItensAmbiente(String nome, String descricao){
         Item item = new Item(nome, descricao);
         itensDisponiveisAmbiente.add(item);
+    }
+
+    public Map<String, Movel> getMoveis() {
+        return Collections.unmodifiableMap(moveis);
     }
 
     /**
@@ -136,8 +134,8 @@ public class Ambiente
                     Voce avista os seguintes moveis:
                     ========================================
                     """);
-            for (Movel movel : moveis) {
-                moveisString.append(movel.getNome()).append(": ").append(movel.getDescricao()).append("\n");
+            for (String movelNome : moveis.keySet()) {
+                moveisString.append(moveis.get(movelNome).toString());
             }
             moveisString.append("========================================");
             return moveisString.toString();
@@ -154,18 +152,17 @@ public class Ambiente
 
     /**
      * Transfere os itens do movel
-     * @param movel Nome do movel
+     * @param movelNome Nome do movel
      * @return Array de itens transferidos
      * @author Davi Pedro
      */
-    public ArrayList<Item> transferirItensMovel(String movel){
+    public ArrayList<Item> transferirItensMovel(String movelNome){
         ArrayList<Item> itensTransferidos = new ArrayList<>();
 
-        for (Movel m : moveis){
-            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
-                itensTransferidos = m.transferirItens();
-            }
+        if (validaMovel(movelNome)) {
+            itensTransferidos = moveis.get(movelNome).transferirItens();
         }
+
         return itensTransferidos;
     }
 
@@ -174,12 +171,11 @@ public class Ambiente
      * @return Descricao dos itens que estao no movel
      * @author Davi Pedro
      */
-    public String getDescricaoItensMovel(String movel){
-        for (Movel m : moveis){
-            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
-                return m.getItensDescricao();
-            }
+    public String getDescricaoItensMovel(String movel) {
+        if (validaMovel(movel)) {
+            return moveis.get(movel).getItensDescricao();
         }
+
         return null;
     }
 
@@ -190,11 +186,10 @@ public class Ambiente
      * @author Davi Pedro
      */
     public boolean validaMovel(String movel){
-        for (Movel m : moveis){
-            if (movel.equalsIgnoreCase(m.getNome().toLowerCase())){
-                return true;
-            }
+        if (moveis.get(movel) != null) {
+            return true;
         }
+
         return false;
     }
 
@@ -208,6 +203,14 @@ public class Ambiente
      */
     public Ambiente getSaida(String direcao){
         return saidas.get(direcao);
+    }
+
+    public String getSaidas(){
+        String direcoes = "";
+        for(String d : saidas.keySet()){
+            direcoes = direcoes + d + ", ";
+        }
+        return direcoes;
     }
 
     /**

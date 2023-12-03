@@ -39,30 +39,21 @@ public class Analisador
      * eh um ambiente com bancada e entao gera um comando normal ou um
      * comando nulo
      * @param ambienteLocal O ambiente atual que o jogador esta
-     * @param ambienteComBancada O ambiente que possui bancada no jogo
      * @return O comando do usuario
      * @author Davi Pedro
      */
-    public Comando pegarComando(String ambienteLocal, String ambienteComBancada)
-    {
-        String linha;
-        String palavra1 = null;
-        String palavra2 = null;
-
+    public Comando pegarComando(Ambiente ambienteLocal) {
         System.out.print("> ");
-
-        linha = entrada.nextLine();
-
+    
+        String linha = entrada.nextLine();
         Scanner tokenizer = new Scanner(linha);
-        if(tokenizer.hasNext()) {
-            palavra1 = tokenizer.next();
-            if(tokenizer.hasNext()) {
-                palavra2 = tokenizer.next();
-            }
-        }
+    
+        String palavra1 = tokenizer.hasNext() ? tokenizer.next() : null;
+        String palavra2 = tokenizer.hasNext() ? tokenizer.next() : null;
+    
         tokenizer.close();
-
-        boolean bancada = ambienteLocal.equalsIgnoreCase(ambienteComBancada);
+    
+        boolean bancada = ambienteLocal.getMoveis().get("BANCADA") != null;
 
         if (bancada){
             if(ComandosBancada.ehComandoBancada(palavra1) || ComandosGerais.ehComandoGeral(palavra1)){
@@ -79,7 +70,7 @@ public class Analisador
                 return new Comando(null, palavra2);
             }
         }
-    }
+    }    
 
     /**
      * Imprime uma lista de palavras de comando válidos.
