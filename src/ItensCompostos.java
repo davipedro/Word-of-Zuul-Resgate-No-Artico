@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Enum src.ItensCompostos - Esse enum define e fornece os comandos dos itens que podem ser criados
+ * Enum ItensCompostos - Esse enum define e fornece os comandos dos itens que podem ser criados
  * no jogo.<br/>
  *
  * <br/>Um item composto eh um item formado por outros itens para que seja possivel concluir
@@ -62,7 +62,7 @@ public enum ItensCompostos {
      * Retorna o item composto referente ao nome passado por parametro, caso o nome
      * passado nao seja encontrado, nao seja um item composto, eh retornado null.
      * @param nomeItem Nome do item que se deseja receber de retorno
-     * @return src.Item composto definido no Enum ou null caso nao seja encontrado
+     * @return Item composto definido no Enum ou null caso nao seja encontrado
      * @author Davi Pedro
      */
     public static ItensCompostos getItemComposto(String nomeItem){
@@ -85,9 +85,10 @@ public enum ItensCompostos {
      * @author Davi Pedro
      */
     public static String getItensCompostosString(){
-        StringBuilder itens = new StringBuilder(" - ");
+        StringBuilder itens = new StringBuilder("");
         for (ItensCompostos itemComposto : ItensCompostos.values()){
-            itens.append(itemComposto.getNome()).append(" - ");
+            itens.append(" - ");
+            itens.append(itemComposto.getNome()).append("<br>");
         }
         return itens.toString();
     }

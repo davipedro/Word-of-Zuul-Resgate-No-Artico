@@ -3,12 +3,16 @@ package src;
 import java.util.ArrayList;
 
 /**
- * Classe src.Bancada - Essa classe define e fornece as funcionalidades da bancada.<br/>
+ * Classe Bancada - Essa classe define e fornece as funcionalidades da
+ * bancada.<br/>
  *
- * <br/> A bancada eh um objeto especial, que eh tratado como um comando, no qual
- * permite o jogador a compor seus itens necessarios para avancar no jogo, ela interage
+ * <br/>
+ * A bancada eh um objeto especial, que eh tratado como um comando, no qual
+ * permite o jogador a compor seus itens necessarios para avancar no jogo, ela
+ * interage
  * com os itens compostos declarados no jogo e os comandos da bancada.
- * @author  Davi Pedro
+ * 
+ * @author Davi Pedro
  * @version 2023.12.03
  */
 public class Bancada {
@@ -20,17 +24,20 @@ public class Bancada {
      * @return Uma lista com os possiveis itens compostos a serem feitos
      * @author Davi Pedro
      */
-    public String ListaItensCompostos(){
-        return "Os possiveis itens sao:\n" + ItensCompostos.getItensCompostosString();
+    public String ListaItensCompostos() {
+        return "<html>Os possiveis itens sao:<br>" + ItensCompostos.getItensCompostosString() + "</html>";
     }
 
     /**
-     * Verifica se o jogador possui os itens necessarios para a receita, no inventario.
+     * Verifica se o jogador possui os itens necessarios para a receita, no
+     * inventario.
+     * 
      * @param nomeItem
-     * @return Boolean que indica se o jogador possui os itens necessarios para a compor o item
+     * @return Boolean que indica se o jogador possui os itens necessarios para a
+     *         compor o item
      * @author Davi Pedro
      */
-    private boolean checaIngredientes(String nomeItem){
+    private boolean checaIngredientes(String nomeItem) {
         ArrayList<String> inventario = Inventario.getInventarioString();
         ArrayList<String> receita = buscarReceita(nomeItem);
         inventario.retainAll(receita);
@@ -39,15 +46,16 @@ public class Bancada {
 
     /**
      * Busca a receita com o nome do item fornecido
+     * 
      * @param nomeItem Nome do item que se deseja receber a receita
      * @return A receita do item
      * @author Davi Pedro
      */
-    private ArrayList<String> buscarReceita(String nomeItem){
+    private ArrayList<String> buscarReceita(String nomeItem) {
         ArrayList<String> receita = new ArrayList<>();
-        for (ItensCompostos itemComposto : ItensCompostos.values()){
-            if (itemComposto.getNome().equalsIgnoreCase(nomeItem)){
-                 receita = itemComposto.getReceita();
+        for (ItensCompostos itemComposto : ItensCompostos.values()) {
+            if (itemComposto.getNome().equalsIgnoreCase(nomeItem)) {
+                receita = itemComposto.getReceita();
             }
         }
         return receita;
@@ -56,24 +64,25 @@ public class Bancada {
     /**
      * Classe principal que chama outros metodos para verificar as condicoes
      * da composicao do item
+     * 
      * @param nomeItem Nome do item que se deseja compor
      * @return Mensagem que informa se o item foi ou nao composto
      * @author Davi Pedro
      */
-    public String comporItem(String nomeItem){
-        if (nomeItem.equalsIgnoreCase("cancelar")){
+    public String comporItem(String nomeItem) {
+        if (nomeItem.equalsIgnoreCase("cancelar")) {
             return "Composicao cancelada..";
         } else {
-            if (!validarItemEscolhido(nomeItem)){
+            if (!validarItemEscolhido(nomeItem)) {
                 return "Esse item nao existe!";
             }
-            if (checaIngredientes(nomeItem)){
+            if (checaIngredientes(nomeItem)) {
                 ArrayList<String> receita = buscarReceita(nomeItem);
                 Inventario.removerItens(receita);
-                if ((enumParaItem(nomeItem) != null)){
-                    Item itemComposto = enumParaItem(nomeItem);
+                if ((enumParaItemComposto(nomeItem) != null)) {
+                    Item itemComposto = enumParaItemComposto(nomeItem);
                     Inventario.adicionarItem(itemComposto);
-                    return "src.Item composto com sucesso!";
+                    return "Item composto com sucesso!";
                 }
             } else {
                 return "Voce nao possui os itens necessarios";
@@ -83,29 +92,32 @@ public class Bancada {
     }
 
     /**
-     * Recebe o nome referente ao item composto e retorna um item com as caracteristicas do item composto,
+     * Recebe o nome referente ao item composto e retorna um item com as
+     * caracteristicas do item composto,
      * caso nao seja possivel obter o item composto eh retornado null
+     * 
      * @param nomeItem Nome do item composto
-     * @return src.Item ou nulo
+     * @return Item ou nulo
      * @author Davi Pedro
      */
-    public Item enumParaItem(String nomeItem){
+    public Item enumParaItemComposto(String nomeItem) {
         ItensCompostos itemComposto = ItensCompostos.getItemComposto(nomeItem);
-        if (itemComposto == null){
+        if (itemComposto == null) {
             return null;
         }
-        return new Item(itemComposto.getNome(),itemComposto.getDescricao());
+        return new ItemComposto(itemComposto.getNome(), itemComposto.getDescricao());
     }
 
     /**
      * Verifica se o item escolhido existe no jogo
+     * 
      * @param nomeItem Nome do item que se deseja verificar
      * @return Boolean que indica se o item existe ou nao no jogo
      * @author Davi Pedro
      */
-    public boolean validarItemEscolhido(String nomeItem){
-        for (ItensCompostos itemComposto : ItensCompostos.values()){
-            if (itemComposto.getNome().equalsIgnoreCase(nomeItem)){
+    public boolean validarItemEscolhido(String nomeItem) {
+        for (ItensCompostos itemComposto : ItensCompostos.values()) {
+            if (itemComposto.getNome().equalsIgnoreCase(nomeItem)) {
                 return true;
             }
         }
@@ -114,11 +126,12 @@ public class Bancada {
 
     /**
      * Verifica se a palavra eh um comando valido na bancada
-     * @param entrada src.Comando a ser verificado
+     * 
+     * @param entrada Comando a ser verificado
      * @return Boolean que indica se eh um comando da bancada ou nao
      * @author Davi Pedro
      */
-    public boolean validarEntrada(String entrada){
+    public boolean validarEntrada(String entrada) {
         return ComandosBancada.ehComandoBancada(entrada);
     }
 
@@ -126,20 +139,22 @@ public class Bancada {
      * @return Descricao da bancada
      * @author Davi Pedro
      */
-    public String getDescricao(){
+    public String getDescricao() {
         return descricao;
     }
 
     /**
      * Mostra todos os comandos validos <br/>
-     * (O comando 'src.Bancada' nao eh um comando valido quando ja se esta na bancada)
+     * (O comando 'Bancada' nao eh um comando valido quando ja se esta na
+     * bancada)
+     * 
      * @return Uma string com os comandos validos
      * @author Davi Pedro
      */
-    public String mostrarComandos(){
+    public String mostrarComandos() {
         StringBuilder comandos = new StringBuilder("seus comandos sao:\n");
-        for (ComandosBancada comando : ComandosBancada.values()){
-            if (comando != ComandosBancada.BANCADA){
+        for (ComandosBancada comando : ComandosBancada.values()) {
+            if (comando != ComandosBancada.BANCADA) {
                 comandos.append(comando).append(" ");
             }
         }
