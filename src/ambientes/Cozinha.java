@@ -17,6 +17,6 @@ public class Cozinha extends Ambiente {
   }
 
   private void defineItens() {
-    definirItensAmbiente("BATERIA", "uma bateria de 9V");
+    definirItensAmbiente("FACA DE CHEF", "uma faca muito afiada");
   }
 }
